@@ -132,15 +132,17 @@ const post = {
         if(error){
             return next(error);
         }
-
+        const {id} = req.params
         try{
             const check = await POST.deleteOne({_id : id});
             if(check){
-
+                await COMMENT.deleteMany({postid : id})
             }
         }catch(error){
             return next(error);
         }
+        
+        return res.status(200).json({message : "Post Deleted"});
         
     },
     async getAllPost(req, res, next){
