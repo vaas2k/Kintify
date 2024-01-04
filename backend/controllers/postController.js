@@ -1,6 +1,7 @@
 const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
 
 const Joi = require('joi');
+const COMMENT = require('../Schemas/comment');
 const POST = require('../Schemas/post');
 const cloudinary = require('cloudinary').v2;
 const postDto = require('../Dtos/postdto');
@@ -21,7 +22,8 @@ const post = {
             title : Joi.string().required(),
             description : Joi.string().required(),
             author : Joi.string().regex(mongodbIdPattern).required(),
-            photo : Joi.string().required()
+            photo : Joi.string().required(),
+            tags : Joi.array().items(Joi.string()),
         })
         // validate users database
         const { error } = dataCheck.validate(req.body); 
@@ -29,7 +31,7 @@ const post = {
             return next(error);
         }
 
-        const {title , description , photo , author } = req.body;
+        const {title , description , photo , author , tags } = req.body;
         // save image
         let responce ;
         try{
@@ -48,7 +50,8 @@ const post = {
                 title,
                 description,
                 author,
-                photoPath : JSON.stringify(responce.secure_url,null)
+                photoPath : JSON.stringify(responce.secure_url,null),
+                tags
             })
 
             await post.save();
@@ -66,7 +69,8 @@ const post = {
             title : Joi.string().required(),
             description : Joi.string().required(),
             author : Joi.string().regex(mongodbIdPattern).required(),
-            photo : Joi.string()
+            photo : Joi.string(),
+            tags : Joi.array().items(Joi.string())
         })
         
         const { error } = dataCheck.validate(req.body); 
@@ -74,7 +78,7 @@ const post = {
             return next(error);
         }
 
-        const {id, title , description , photo , author} = req.body;
+        const {id, title , description , photo , author , tags} = req.body;
 
         try{
             const check = await POST.findOne({_id : id},{author : author});
@@ -104,7 +108,8 @@ const post = {
                     title,
                     author,
                     description,
-                    photoPath : JSON.stringify(responce.secure_url,null,2)
+                    photoPath : JSON.stringify(responce.secure_url,null,2),
+                    tags
                 }) 
             }else{
                 post = await POST.updateOne(
@@ -113,6 +118,7 @@ const post = {
                     title,
                     author,
                     description,
+                    tags
                 }) 
             }
             
@@ -132,16 +138,17 @@ const post = {
         if(error){
             return next(error);
         }
-
+        const {id} = req.params
         try{
             const check = await POST.deleteOne({_id : id});
             if(check){
-
+                await COMMENT.deleteMany({postid : id})
             }
         }catch(error){
             return next(error);
         }
         
+        return res.status(200).json({message : "Post Deleted"});
     },
     async getAllPost(req, res, next){
         let posts = [];

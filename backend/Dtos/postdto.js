@@ -6,6 +6,7 @@ class postDto {
         this.title = post.title;
         this.description = post.description;
         this.photo = post.photoPath;
+        this.tags = post.tags;
     }
 }
 
