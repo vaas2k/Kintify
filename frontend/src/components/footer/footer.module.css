@@ -1,0 +1,10 @@
+.foot{
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    gap: 100px;
+    background-color:white;
+    height: 25px;
+    font-size: 10px;
+    margin-bottom: -7px;
+}

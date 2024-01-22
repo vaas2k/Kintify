@@ -1,10 +1,34 @@
 import './App.css';
 
-const App = () => {
+import Navbar from './components/Navbar/navbar';
+import Login from './components/login sign/login-sign';
+import Sign from './components/login sign/sign';
+import Home from './pages/home/home';
+import Feed from './pages/feeds/feeds';
+import Create from './pages/create/create';
+import Profile from './pages/profile/profile';
+import { Routes , Route , BrowserRouter } from 'react-router-dom';
+import Explore from './pages/explore/explore';
+import Front from './pages/front/front';
 
+
+const App = () => {
+  const username = "somthing";
   return (
     <div>
-      <h1>Hello World!</h1>
+      <BrowserRouter>
+        <Navbar/>
+        <Routes >
+          <Route path='/' element={<Front/>}/>
+          <Route path="/home" element={<Home/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/sign" element={<Sign/>} />
+          <Route path="/feed" element={<Feed/>} />
+          <Route path= {`/profile`} element={<Profile/>} />
+          <Route path="/create" element={<Create/>} />
+          <Route path="/explore" element={<Explore/>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
