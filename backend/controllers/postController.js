@@ -149,6 +149,7 @@ const post = {
         }
         
         return res.status(200).json({message : "Post Deleted"});
+        
     },
     async getAllPost(req, res, next){
         let posts = [];
