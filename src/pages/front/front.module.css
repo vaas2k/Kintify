@@ -1,0 +1,19 @@
+.front {
+    background: rgba(255, 255, 255, 1) url('../../images/sss.png') center center / cover no-repeat;
+    width: 100%;
+    height: calc(819px - 80px); /* Adjust <navbar-height> to the actual height of your navbar */
+    overflow: hidden;
+  }
+
+  .front {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-content {
+    flex: 1; /* This will make the main content take up remaining space */
+  }
+  
+  .footer {
+    margin-top: auto; /* Push the footer to the bottom */
+  }

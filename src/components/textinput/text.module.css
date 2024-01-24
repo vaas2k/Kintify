@@ -1,0 +1,20 @@
+.textinput{
+    width: 200px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 25px;
+    background-color: #EFEFEF;
+}
+.text input::placeholder{
+    font-size: 11px;
+    opacity: 40%;
+}
+
+.errorMessage{
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-size: 9px;
+    color: #ff2626;
+    margin-left: 35px;
+}
