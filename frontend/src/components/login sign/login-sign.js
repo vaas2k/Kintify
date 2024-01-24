@@ -1,8 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ls from './login-sign.module.css';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { togglelog , togglesign } from '../../store/logslic';
+import {login} from '../../api/internal';
+import { setUser } from '../../store/userslice';
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const toggleSignComp = () => { dispatch(togglesign())};
 
     const [log, setLog] = useState({
         username: '',
@@ -22,10 +29,24 @@ const Login = () => {
         })
     }
 
-    function handlechange(e) {
+    async function handleclick(e) {
         e.preventDefault();
-
         
+        const responce = await login(log);
+        if(responce.status === 200){
+            const user = {
+                username : responce.data.username,
+                _id : responce.data._id,
+                photo : responce.data.photo,
+                auth : responce.data.auth
+            }
+            console.log(responce.data);
+            dispatch(setUser(user));
+            navigate('/home');
+        }
+        else if(responce.status !== 200){
+            console.log(responce.data);
+        }
     }
 
     return (
@@ -58,10 +79,10 @@ const Login = () => {
 
                 </form>
 
-                <div className={ls.logbutton}><button onClick={handlechange} type='submit'>Login</button></div>
+                <div className={ls.logbutton}><button onClick={handleclick} type='submit'>Login</button></div>
 
                 <div className={ls.signbutton}>
-                    sign up instead ? <Link to={'/sign'}><button>signup</button></Link>
+                    sign up instead ? <button onClick={toggleSignComp}>signup</button>
                 </div>
             </div>
         </div>

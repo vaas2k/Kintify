@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import i from '../../images/noooaccc.png'
+
 import n from './navbar.module.css';
-import { Bell, ChevronDownCircle, Home, BellRing, MessageCircleMore } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Bell, LogOut, ChevronDownCircle, Home, BellRing, MessageCircleMore } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import DropDown from '../dropdown/dropdown';
-import { UseSelector, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { togglelog , togglesign } from '../../store/logslic';
+import Logout from '../../hooks/logout';
+import { logout } from "../../api/internal";
+import { resetUser } from "../../store/userslice";
 
 const Search = () => {
   return (
@@ -18,35 +24,63 @@ const Search = () => {
 };
 
 const Navbar = () => {
-  const islogged = false;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const profileimage = useSelector((state) => { return state.user.photo})
+  const islogged = useSelector((state) => { return state.user.auth});
+  
+  // handle the logout 
+  async function handlelogout(){
+    try{
+      const response = await logout();
+      if(response.status === 200){
+          dispatch(resetUser());
+          navigate('/');
+      }
+  }catch(error){
+      throw error;
+  }
+  }
+  //------------------------------------------------------>>>>
+
+  // shows and unshow dropmenu
   const [menu, setMenu] = useState(false);
   const [menu1, setMenu1] = useState(false);
+  const toggleMenu = () => setMenu(!menu);
+  const toggleMenu1 = () => setMenu1(!menu1);
+
+  // shows login and signup component when not logged in
+  const toggleLoginComp = () => { dispatch(togglelog())};
+  const toggleSignComp = () => { dispatch(togglesign())};
+  //------------------------------------------------>>>>
+
+
+  //---------------> use for handling responciveness 
   const [size, setSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight
   });
-
-  const toggleMenu = () => setMenu(!menu);
-  const toggleMenu1 = () => setMenu1(!menu1);
-
   const handleSize = () => {
     setSize({
       width: window.innerWidth,
       height: window.innerHeight
     });
   };
-
   useEffect(() => {
     window.addEventListener('resize', handleSize);
     return () => window.removeEventListener('resize', handleSize);
   }, []);
+  //------------------------------------------------------>>>>
 
+  // render left section of navabar
   const renderLeftSection = () => {
     if (size.width > 915) {
       return (
         <div className={n.left}>
-          <Link to={'/home'}><button><h>Home</h></button></Link>
-          <Link to={'/create'}><button><h>Create</h></button></Link>
+         { islogged && <Link to={'/home'}><button><h>Home</h></button></Link>}
+         { islogged && <Link to={'/create'}><button><h>Create</h></button></Link>}
+         { !islogged && <Link to={'/explore'}><button><h>Explore</h></button></Link>}
         </div>
       );
     } else {
@@ -54,14 +88,18 @@ const Navbar = () => {
         <div>
           <button onClick={toggleMenu} style={menu ? { ...h_style } : { ...n_style }}><Home /></button>
           {menu && <DropDown
-            s1={<Link to={'/home'}><button><h>Home</h></button></Link>}
-            s2={<Link to={'/create'}><button><h>Create</h></button></Link>}
+           s1 = { islogged && <Link to={'/home'}><button><h>Home</h></button></Link>}
+           s2 = { islogged && <Link to={'/create'}><button><h>Create</h></button></Link>}
+           s3 = { !islogged && <Link to={'/explore'}><button><h>Explore</h></button></Link>}
           />}
         </div>
       );
     }
   };
+  //------------------------------------------------------>>>>
 
+
+  // render Right section of navabar
   const renderRightSection = () => {
     if (size.width > 915) {
       return (
@@ -70,11 +108,12 @@ const Navbar = () => {
             <>
               <button><Bell /></button>
               <button><MessageCircleMore /></button>
+              <button onClick={() => handlelogout()}><LogOut /></button>
             </>
           ) : (
             <>
-              <Link to={'/login'}><button><h>Login</h></button></Link>
-              <Link to={'/sign'}><button><h>Signup</h></button></Link>
+              {<button onClick={toggleLoginComp}><h>Login</h></button>}
+              <button onClick={toggleSignComp}><h>Signup</h></button>
             </>
           )}
         </div>
@@ -82,18 +121,21 @@ const Navbar = () => {
     } else {
       return (
         <div>
-          <button onClick={toggleMenu1} style={menu1 ? { ...h_style } : { ...n_style }}><ChevronDownCircle /></button>
+          <button className={n.arrow} onClick={toggleMenu1} style={menu1 ? { ...h_style } : { ...n_style }} ><ChevronDownCircle /></button>
           {menu1 && (
             <DropDown
-              s1={islogged ? <button><Bell /></button> : <Link to={'/login'}><button><h>Login</h></button></Link>}
-              s2={islogged ? <button><MessageCircleMore /></button> : <Link to={'/signup'}><button><h>Signup</h></button></Link>}
+              s1={islogged ? <button><Bell /></button> : <Link to={'/'}><button onClick={toggleLoginComp}><h>Login</h></button></Link>}
+              s2={islogged ? <button><MessageCircleMore /></button> : <Link to={'/'}><button onClick={toggleSignComp}><h>Signup</h></button></Link>}
+              s3={islogged && <button onClick={handlelogout}><LogOut /></button> }
             />
           )}
         </div>
       );
     }
   };
+  //------------------------------------------------------>>>>
 
+  
   const h_style = {
     backgroundColor: '#373636',
     color: 'white'
@@ -105,7 +147,9 @@ const Navbar = () => {
 
   return (
     <div className={n.nav}>
-      <Link to={'/'}><img src={require('../../images/Kintify.png')} className={n.navimg} alt='Logo' /></Link>
+      { !islogged ? (<Link to={'/'}><img src={require('../../images/Kintify.png')} className={n.navimg} alt='Logo' /></Link>)
+      :
+      (<Link to={'/home'}><img src={require('../../images/Kintify.png')} className={n.navimg} alt='Logo' /></Link>)}
       <div className={n.navbar}>
         {renderLeftSection()}
         <div className={n.mid}>
@@ -113,7 +157,7 @@ const Navbar = () => {
         </div>
         {renderRightSection()}
       </div>
-      <Link to={'/profile'}><img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={n.proimg} alt='Profile' /></Link>
+      <Link to={'/profile'}><img src={ profileimage ? profileimage : require('../../images/noooaccc.png')} className={n.proimg} alt='Profile' /></Link>
     </div>
   );
 };

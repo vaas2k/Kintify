@@ -7,26 +7,38 @@ import Home from './pages/home/home';
 import Feed from './pages/feeds/feeds';
 import Create from './pages/create/create';
 import Profile from './pages/profile/profile';
-import { Routes , Route , BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Explore from './pages/explore/explore';
 import Front from './pages/front/front';
+import Photo from './components/photo/photo';
+import { refresh } from './api/internal';
+import useAutoLogin from './hooks/autologin';
 
 
 const App = () => {
-  const username = "somthing";
+  
+  
+  useAutoLogin();
   return (
     <div>
       <BrowserRouter>
-        <Navbar/>
+        <Navbar />
         <Routes >
-          <Route path='/' element={<Front/>}/>
-          <Route path="/home" element={<Home/>} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/sign" element={<Sign/>} />
-          <Route path="/feed" element={<Feed/>} />
-          <Route path= {`/profile`} element={<Profile/>} />
-          <Route path="/create" element={<Create/>} />
-          <Route path="/explore" element={<Explore/>} />
+          <Route path="*" element={
+            <div style={{ textAlign: 'center' }}>
+              <h1>Error 404</h1>
+              <a href='/'>go back</a>
+            </div>
+          } />
+          <Route path='/' element={<Front />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign" element={<Sign />} />
+          <Route path="/feed" element={<Feed />} />
+          <Route path={`/profile`} element={<Profile />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/image" element={<Photo />} />
         </Routes>
       </BrowserRouter>
     </div>

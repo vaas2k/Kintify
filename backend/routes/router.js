@@ -14,7 +14,7 @@ router.get('/about',(req, res)=>{
 // for user authentication
 router.post('/login',users.login);
 router.post('/signup',users.signup);
-router.get('/refresh',auth,users.refresh);
+router.get('/refresh',users.refresh);
 router.get('/logout',auth,users.logout);
 
 

@@ -27,21 +27,21 @@ const users = {
             username: Joi.string().min(4).max(25).required(),
             email: Joi.string().email().required(),
             password: Joi.string().pattern(password_pattern).required(),
-            confirm_password: Joi.ref('password'),
+            confirmPassword: Joi.ref('password'),
             photo: Joi.string()
         })
-
+        
         const { error } = schemaCheck.validate(req.body);
         if (error) {
             return next(error);
         }
         // check if username or email already exist in DB (if exist => handle accordingly)
         const { name, username, email, password, photo } = req.body;
-
+        
         try {
             const user_exist = await USER.exists({ username: username });
             const email_exist = await USER.exists({ email: email });
-
+            
             if (user_exist) {
                 const error = {
                     status: 409,
@@ -59,24 +59,31 @@ const users = {
         } catch (error) {
             return next(error);
         }
-
-        // upload pic to some cloud api
-
-        let imageUrl ;
-        if (photo) {
-
-            const responce =  await cloudinary.uploader.upload(photo, {
-                resource_type: 'image',
-                public_id: "users-kintify"
-            })
-            imageUrl = responce.secure_url;
-        }
-
-        console.log(imageUrl);
-
-        // hash the password
-        const hash_password = await bcrypt.hash(password, 10);
         
+        // upload pic to some cloud api
+        
+        let imageUrl ;
+        try{
+            
+            if (photo) {
+                
+                const responce =  await cloudinary.uploader.upload(photo, {
+                    resource_type: 'image',
+                    public_id: "users-kintify"
+                })
+                imageUrl = responce.secure_url;
+            }
+            
+            console.log(imageUrl);
+            
+        }
+        catch(error){
+            return next(error);
+        }
+        
+        // hash the password
+        console.log(req.body);
+        const hash_password = await bcrypt.hash(password, 10);
         // save the user along with the hash password
         let user;
         try{
@@ -87,7 +94,7 @@ const users = {
                     username,
                     email,
                     password : hash_password,
-                    photoPath : JSON.stringify(imageUrl,null,2)
+                    photoPath : imageUrl || 'null'
                 })
             }else{
                 user = new USER({

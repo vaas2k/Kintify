@@ -1,0 +1,76 @@
+.pp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    position: absolute;
+    top: 100px;
+    right: 160px;
+    z-index: 2;
+    /* Set a higher z-index for the Photo component to appear over the Sign component */
+
+}
+
+.photo {
+    width: 400px;
+    height: 450px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.photoPrompt {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.upbutton {
+    border-width: 15px;
+    font-size: 15.5px;
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px #ccc;
+    color: #fffdfd;
+    background-color: #393838;
+    border-radius: 15px;
+    transition: background-color 0.5s ease;
+}
+
+.upbutton:hover {
+    background-color: #393838;
+    color: white;
+}
+
+.photoPreview {
+    margin-top: 20px;
+}
+
+
+.close button {
+    border-width: 15px;
+    font-size: 15.5px;
+    display: flex;
+    align-items: center;
+    justify-content:last baseline;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px #ccc;
+    color: #ffffff;
+    background-color: rgb(47, 47, 47);
+    border-radius: 15px;
+    transition: background-color 0.5s ease;
+    position: absolute;
+    bottom: 20px;
+    left: 40%;
+}
+
+.close button:hover {
+    background-color: #626161;
+    color: white;
+}
