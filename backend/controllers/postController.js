@@ -70,6 +70,7 @@ const post = {
             description : Joi.string().required(),
             author : Joi.string().regex(mongodbIdPattern).required(),
             photo : Joi.string(),
+            allowcomment : Joi.boolean().required(),
             tags : Joi.array().items(Joi.string())
         })
         
