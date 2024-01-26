@@ -11,4 +11,9 @@ const signschema = yup.object().shape({
     confirm_password : yup.string().oneOf([yup.ref("password")], "passwords must match").required('password required')
 })
 
-export default signschema;
+const logschema = yup.object().shape({
+    username : yup.string().max(30).min(4),
+    password : yup.string().matches(passwordPattern, {message : erroMessage}),
+})
+
+export { logschema, signschema};

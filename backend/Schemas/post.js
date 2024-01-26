@@ -8,8 +8,10 @@ const newPost = new Schema({
     description : {type : String , require : true},
     author : {type : mongoose.SchemaTypes.ObjectId , ref: 'USER'},
     photoPath : {type : String},
+    videoPath : {type : String},
     allowcomment : {type : Boolean},
-    tags : [{type : String}]
+    tags : [{type : String}],
+    link : {type : String}
 })
 
 module.exports = mongoose.model('POST',newPost,'post-kintify');

@@ -85,10 +85,17 @@ const Photo = (props) => {
     <div className={p.photo}>
       <div className={p.photoPrompt}>
         <p>Choose a photo</p>
+        <span className={p.splabel}>
+          {file ? <label htmlFor='ph'className={p.ilabel}>Replace Media</label> 
+          : 
+          <label htmlFor='ph'className={p.ilabel}>Select Media</label>
+          }
+          </span>
         <input
           type="file"
           name="photo"
-          id="photo"
+          id="ph"
+          style ={{display : 'none'}}
           accept="image/jpg, image/jpeg, image/png"
           onChange={handleFileChange}
         />
@@ -103,7 +110,7 @@ const Photo = (props) => {
           Upload
         </animated.button>
         <animated.div style={slideAnimation} className={p.photoPreview}>
-          {photo !== '' && <img src={photo} alt="Preview" width={350} height={250} />}
+          {photo !== '' && <img src={photo} alt="Preview" width={350} height={250} style={{borderRadius : '20px'}} />}
         </animated.div>
         <div className={p.close}>
           <button onClick={handleclose}>close</button>

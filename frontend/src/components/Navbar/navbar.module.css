@@ -53,9 +53,11 @@
 .searchInput {
   width: 400px;
   height: 30px;
-  border: 1px solid gray;
-  border-radius: 18px;
-  opacity: 80%;
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 25px;
+  background-color: #EFEFEF;
 }
 .searchInput::selection{
   background-color: #373636;

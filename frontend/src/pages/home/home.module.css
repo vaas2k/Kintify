@@ -1,0 +1,36 @@
+.posts {
+    column-count: 5;
+    column-gap: 1em;
+    padding: 12px;
+}
+
+.postimg {
+    border-radius: 20px;
+    background: #ddd;
+    display: inline-block;
+    margin: 0 0 1em;
+    width: 100%;
+    transition: opacity 0.6s ease;
+}
+
+.postimg:hover{
+    opacity: 60%;
+    cursor: pointer;
+}
+
+@media (max-width: 556px) {
+    .posts {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 558px) and (max-width:800px ) {
+    .posts {
+        column-count: 3;
+    }
+}
+@media (min-width: 800px) and (max-width:1000px ) {
+    .posts {
+        column-count: 4;
+    }
+}

@@ -22,23 +22,38 @@ const post = {
             title : Joi.string().required(),
             description : Joi.string().required(),
             author : Joi.string().regex(mongodbIdPattern).required(),
-            photo : Joi.string().required(),
+            photo : Joi.string(),
+            video : Joi.string(),
+            allowcomment : Joi.boolean(),
             tags : Joi.array().items(Joi.string()),
+            link : Joi.string()
         })
         // validate users database
         const { error } = dataCheck.validate(req.body); 
         if(error){
+            console.log(error)
             return next(error);
         }
+        console.log(req.body)
 
-        const {title , description , photo , author , tags } = req.body;
+        const {title , description ,link , photo , video , author , tags , allowcomment } = req.body;
         // save image
         let responce ;
         try{
-            responce = await cloudinary.uploader.upload(photo, {
-                resource_type : "image",
-                public_id : "posts-kintify"
-            })
+
+            if(photo){
+                responce = await cloudinary.uploader.upload(photo, {
+                    resource_type : "image",
+                    public_id : "posts-kintify"
+                })
+            }
+            else if(video){
+                responce = await cloudinary.uploader.upload(video, {
+                    resource_type : "video",
+                    public_id : "posts-kintify"
+                })
+            }
+            
             
         }catch(error){
             return next(error);
@@ -46,13 +61,30 @@ const post = {
         // save the data in DB
         let post;
         try{
-            post = new POST({
-                title,
-                description,
-                author,
-                photoPath : JSON.stringify(responce.secure_url,null),
-                tags
-            })
+
+            if(photo){
+                post = new POST({
+                    title,
+                    description,
+                    author,
+                    photoPath : responce.secure_url || 'null',
+                    tags,
+                    allowcomment,
+                    link
+                })
+            }
+            else if(video){
+                post = new POST({
+                    title,
+                    description,
+                    author,
+                    videoPath : responce.secure_url || 'null',
+                    tags,
+                    allowcomment,
+                    link
+                })
+            }
+            
 
             await post.save();
         }catch(error){
@@ -70,8 +102,10 @@ const post = {
             description : Joi.string().required(),
             author : Joi.string().regex(mongodbIdPattern).required(),
             photo : Joi.string(),
+            video : Joi.string(),
             allowcomment : Joi.boolean().required(),
-            tags : Joi.array().items(Joi.string())
+            tags : Joi.array().items(Joi.string()),
+            link: Joi.string()
         })
         
         const { error } = dataCheck.validate(req.body); 
@@ -79,7 +113,7 @@ const post = {
             return next(error);
         }
 
-        const {id, title , description , photo , author , tags} = req.body;
+        const {id, title , description , photo , video , author , tags} = req.body;
 
         try{
             const check = await POST.findOne({_id : id},{author : author});
@@ -109,17 +143,36 @@ const post = {
                     title,
                     author,
                     description,
-                    photoPath : JSON.stringify(responce.secure_url,null,2),
-                    tags
+                    photoPath : responce.secure_url || 'null',
+                    tags,
+                    link
                 }) 
-            }else{
+            }
+            else if(video){
+                const responce = await cloudinary.uploader.upload(video,{
+                    resource_type : "video"
+                })
+
                 post = await POST.updateOne(
                     {_id : id},
                     {
                     title,
                     author,
                     description,
-                    tags
+                    videoPath : responce.secure_url || 'null',
+                    tags,
+                    link
+                })
+            }
+            else{
+                post = await POST.updateOne(
+                    {_id : id},
+                    {
+                    title,
+                    author,
+                    description,
+                    tags,
+                    link
                 }) 
             }
             

@@ -6,11 +6,6 @@ const post = require('../controllers/postController');
 const comment = require('../controllers/comment');
 const auth = require('../middlewares/auth');
 
-
-router.get('/about',(req, res)=>{
-    res.status(200).json({msg : "hello"});
-})
-
 // for user authentication
 router.post('/login',users.login);
 router.post('/signup',users.signup);

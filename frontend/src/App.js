@@ -7,20 +7,40 @@ import Home from './pages/home/home';
 import Feed from './pages/feeds/feeds';
 import Create from './pages/create/create';
 import Profile from './pages/profile/profile';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, u, BrowserRouterseNavigate } from 'react-router-dom';
 import Explore from './pages/explore/explore';
 import Front from './pages/front/front';
 import Photo from './components/photo/photo';
 import { refresh } from './api/internal';
 import useAutoLogin from './hooks/autologin';
+import { Protected, Protected1 } from './components/protected/protected'
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import Loader from './components/Loading/Loading';
+import { Hypnosis } from 'react-cssfx-loading';
+
+
+
+
+const Prot = ({ isAuth }) => {
+  if (isAuth) {
+    return <Home />
+  }
+  else {
+    return <Front />
+  }
+}
+
 
 
 const App = () => {
-  
-  
+
+
+  const isAuth = useSelector((state) => { return state.user.auth });
+
   useAutoLogin();
   return (
-    <div>
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
       <BrowserRouter>
         <Navbar />
         <Routes >
@@ -31,14 +51,23 @@ const App = () => {
             </div>
           } />
           <Route path='/' element={<Front />} />
-          <Route path="/home" element={<Home />} />
+
+          <Route path="/home" element={<Protected isAuth={isAuth}><Home /></Protected>} />
+
           <Route path="/login" element={<Login />} />
+
           <Route path="/sign" element={<Sign />} />
+
           <Route path="/feed" element={<Feed />} />
-          <Route path={`/profile`} element={<Profile />} />
-          <Route path="/create" element={<Create />} />
+
+          <Route path={`/profile`} element={<Protected isAuth={isAuth}><Profile /></Protected>} />
+
+          <Route path="/create" element={<Protected isAuth={isAuth}><Create /></Protected>} />
+
           <Route path="/explore" element={<Explore />} />
-          <Route path="/image" element={<Photo />} />
+
+          <Route path="/image" element={<Protected isAuth={isAuth}><Photo /></Protected>} />
+
         </Routes>
       </BrowserRouter>
     </div>

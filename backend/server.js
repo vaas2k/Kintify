@@ -7,10 +7,13 @@ const error_middleware = require('./middlewares/erroHandler');
 const cookieParser = require('cookie-parser');
 const auth = require('./middlewares/auth');
 const app = express();
+const path = require('path');
 const cors = require('cors');
 
-const Port = PORT;
 
+
+
+const Port = PORT;
 app.use(cookieParser());
 app.use(cors({
     credentials : true,
