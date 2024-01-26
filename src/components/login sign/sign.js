@@ -4,7 +4,7 @@ import s from './sign.module.css';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import signschema from '../../schema/signschema'
+import {signschema} from '../../schema/signschema'
 import TextInput from '../textinput/textinput';
 import Photo from '../photo/photo';
 import { togglelog } from '../../store/logslic';

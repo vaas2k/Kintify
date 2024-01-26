@@ -5,33 +5,33 @@ import { useDispatch } from 'react-redux';
 import { togglelog , togglesign } from '../../store/logslic';
 import {login} from '../../api/internal';
 import { setUser } from '../../store/userslice';
+import { useFormik } from 'formik';
+import {logschema} from '../../schema/signschema';
+import TextInput from '../textinput/textinput';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const toggleSignComp = () => { dispatch(togglesign())};
+    const [logerror , setLogerror] = useState(false);
 
-    const [log, setLog] = useState({
-        username: '',
-        password: ''
+    const {values, handleChange , touched , handleBlur} = useFormik({
+        initialValues : {
+            username : '',
+            password : ''
+        },
+        validationSchema : logschema
     })
 
-    console.log(log);
-    function logchange(e) {
-
-
-        setLog(oldLog => {
-            const { name, value } = e.target;
-            return {
-                ...oldLog,
-                [name]: value
-            }
-        })
-    }
-
+    console.log(values)
     async function handleclick(e) {
         e.preventDefault();
         
+        const log = {
+            username : values.username,
+            password : values.password
+        }
+
         const responce = await login(log);
         if(responce.status === 200){
             const user = {
@@ -44,8 +44,9 @@ const Login = () => {
             dispatch(setUser(user));
             navigate('/home');
         }
-        else if(responce.status !== 200){
-            console.log(responce.data);
+        else if(responce.status !== 200 || responce.status === 409){
+            setLogerror(true);
+            console.log(responce.message);
         }
     }
 
@@ -58,27 +59,28 @@ const Login = () => {
                 <form className={ls.logform}>
 
                     <h>Username</h>
-                    <input
+                    <TextInput
                         type='text'
-                        onChange={logchange}
+                        onChange={handleChange}
                         name='username'
-                        value={log.username}
+                        value={values.username}
                         placeholder='username'
                         required
-                    />
+                        />
 
                     <h>Password</h>
-                    <input
+                    <TextInput
                         type='password'
-                        onChange={logchange}
+                        onChange={handleChange}
                         name='password'
-                        value={log.password}
+                        value={values.password}
                         placeholder='password'
                         required
                     />
 
                 </form>
-
+                    {logerror && <p style={{fontSize:'10px' , color:'red'}}>username or password not matched</p>}
+                    
                 <div className={ls.logbutton}><button onClick={handleclick} type='submit'>Login</button></div>
 
                 <div className={ls.signbutton}>

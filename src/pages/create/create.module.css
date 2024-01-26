@@ -1,0 +1,220 @@
+.mainpost h2 ,h3{
+  text-align: center;
+  color: #ff2626;
+}
+
+.mainpost h2  {
+  margin: 30px;
+}
+
+.post {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  column-gap: 30px;
+}
+
+.imgupload {
+  text-align: center;
+}
+
+.mainpost input[type="file"] {
+  display: none;
+}
+
+
+
+.uploadButton{
+  border-width: 15px;
+  font-size: 17.5px;
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px #ccc;
+  color: #333;
+  background-color: white;
+  border-radius: 15px;
+  transition: background-color 0.5s ease;
+  border:1px solid ;
+  width: 300px;
+  height: 400px;
+}
+
+.uploadButton:hover {
+  background-color: #393838;
+  color: white;
+}
+
+.uploadButton:active {
+  background-color: #373636;
+  color: white;
+}
+
+.imupload{
+  width: 200px;
+}
+
+
+/* Medium-sized screens */
+@media only screen and (max-width: 768px) {
+  .mainpost {
+    padding: 10px;
+    /* Adjust as needed */
+  }
+  
+  .post {
+    flex-direction: column;
+    /* Stack child elements vertically */
+  }
+  
+  .imgupload {
+    order: 1;
+    /* Move the image upload section to the top */
+  }
+  
+  .postform {
+    order: 2;
+    /* Move the post form section below */
+  }
+
+  .postform1{
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Small-sized screens */
+@media only screen and (max-width: 576px) {
+  /* Additional styling for smaller screens if needed */
+  .post {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    /* Stack child elements vertically */
+  }
+  .createbutton{
+    margin-left: 100px;
+  }
+}
+
+
+.postform {
+  width: 400px;
+}
+
+.postform1{
+  display: flex;
+  flex-direction: column;
+  row-gap: 1px;
+  font-size: 12px;
+}
+.postform1 input,textarea{
+  width: 250px;
+  height :12px;
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 25px;
+  background-color: #EFEFEF;
+}
+.postform1 input::placeholder{
+  font-size: 11px;
+  opacity: 40%;
+}
+
+.postform1 input:hover{
+  border: rgb(82, 80, 80);
+  outline: rgb(82, 80, 80);
+}
+
+.uploadButton{
+  border: 1px solid grey;
+  width: 250px;
+}
+
+.imgupload p{
+  text-align: center;
+  margin-top: 185px;
+}
+
+
+
+.previewimg{
+  max-width: 350px;
+  border-radius: 14px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  margin-bottom: 30px;
+}
+
+.replacebutton{
+  
+  border-width: 15px;
+  font-size: 12.5px;
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px #ccc;
+  color: #333;
+  background-color: white;
+  border-radius: 15px;
+  transition: background-color 0.5s ease;
+  border:1px solid ;
+  width: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  height: 22px;
+  margin-left: 0px;
+}
+
+.replacebutton:hover {
+  background-color: #ff2626;;
+  color: white;
+}
+
+.replacebutton:active {
+  background-color: #373636;
+  color: white;
+}
+
+.previewvid{
+  max-width: 400px;
+  max-height: 400px;
+  border-radius: 14px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+
+.createbutton button{
+  
+  margin-top: 15px;
+  border-width: 20px;
+  font-size: 15.5px;
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px #ccc;
+  color: #333;
+  background-color: white;
+  border-radius: 15px;
+  transition: background-color 0.5s ease;
+}
+
+.createbutton button:hover {
+  background-color:#ff2626;
+  color: white;
+}
+
+.createbutton button:active {
+  background-color: #373636;
+  color: white;
+}
+
+.postform1 textarea{
+  width: 340px;
+}

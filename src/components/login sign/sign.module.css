@@ -87,3 +87,7 @@
     background-color: #ff2626;
     color: white;
 }
+.signbutton button:active{
+    background-color: #000000;
+    color: white;
+}

@@ -38,6 +38,7 @@
     background-color: #393838;
     border-radius: 15px;
     transition: background-color 0.5s ease;
+    margin-left: 140px;
 }
 
 .upbutton:hover {
@@ -74,3 +75,27 @@
     background-color: #626161;
     color: white;
 }
+
+
+
+.splabel {
+    border: 1px solid ;
+    width: 55px;
+    height: 40px;
+    display: inline-block;
+    cursor: pointer;
+    padding: 4px 10px;
+    color: rgb(0, 0, 0);
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-right: 20px;
+    transition: background-color 0.5s ease;
+  }
+
+  .splabel:hover{
+    background-color:#393838 ;
+    color: white;
+  }
+
+  
+

@@ -50,11 +50,24 @@ const logout = async () => {
 
 }
 
+const createPost = async (data) => {
+
+    let response;
+    try{
+        response = await api.post('/create',data);
+    }catch(error){
+        return error;
+    }
+    return response;
+
+}
+
 
 export {
     login,
     signup,
-    logout
+    logout,
+    createPost
 }
 
 
