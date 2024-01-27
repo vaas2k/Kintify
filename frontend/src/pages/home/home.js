@@ -1,101 +1,62 @@
+import { Navigate, useNavigate } from 'react-router-dom';
 import h from './home.module.css';
+import { Link } from 'react-router-dom';
+import { getallPosts } from '../../api/internal';
+import { useRef } from 'react';
 
 import { useState, useEffect } from 'react';
 const Home = () => {
 
-  const mediaType = 'image';
+  const navigate = useNavigate();
+  const videoRef = useRef();
+  // if    photoPath == 'null' display video
+  // elif  videoPath == 'null' display image
+  const mediaType = 'video'
+  const [post, setPosts] = useState([]);
 
-  const [size, setSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
+
+
+    useEffect(() => {
+      async function getblogs() {
+        let response = await getallPosts();
+        if (response.status === 200) {
+          setPosts(response.data);
+        } else if (response.status !== 200) {
+          console.log(response.message);
+        }
+      }
+      getblogs();
+    }, [])
+
+  const newposts = post.map((item) => {
+    return (<div className={h.holdimg}>
+
+      {item.video === 'null' ?
+        (<img
+          src={item.photo}
+          className={h.postimg}
+          onClick={() => { navigate(`/post/${item.id}`) }}
+        ></img>)
+        :
+        (<video
+        ref={videoRef}
+          loop
+          muted="muted"
+          onMouseEnter={(e) => e.target.play()}
+          onMouseLeave={(e) => e.target.pause()}
+          className={h.postvid}
+          onClick={() => { return navigate(`/post/${item.id}`) }}
+        >
+          <source src={item.video} type={'video/mp4'} />
+          Your browser does not support the video tag.
+        </video>)
+      }
+    </div>)
   })
 
-  function handlesize() {
-    setSize({
-      width: window.innerWidth,
-      height: window.innerHeight
-    })
-  }
-
-  useEffect(() => {
-
-    window.addEventListener('resize', handlesize)
-
-    return () => window.removeEventListener('resize', handlesize);
-  }, [])
   return (
     <div className={h.posts}>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-      <div className={h.holdimg}>
-        {mediaType === 'image' ? (<img src={require('../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg')} className={h.postimg}></img>)
-         :
-         (<video></video>)
-         }
-        
-      </div>
-
+      {newposts}
     </div>
   );
 }

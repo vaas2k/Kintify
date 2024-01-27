@@ -112,8 +112,8 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              {<button onClick={toggleLoginComp}><h>Login</h></button>}
-              <button onClick={toggleSignComp}><h>Signup</h></button>
+              <Link to={'/'}><button onClick={toggleLoginComp}><h>Login</h></button></Link>
+              <Link to={'/'}><button onClick={toggleSignComp}><h>Signup</h></button></Link>
             </>
           )}
         </div>

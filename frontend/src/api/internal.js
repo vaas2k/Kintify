@@ -62,12 +62,38 @@ const createPost = async (data) => {
 
 }
 
+const singlePost = async (id) => {
+
+    let response;
+    try{
+        response  = await api.get(`/post/:${id}`);
+    }catch(error){
+        return error;
+    }
+
+    return response;
+}
+
+const getallPosts = async (id) => {
+
+    let response;
+    try{
+        response  = await api.get(`/posts`);
+    }catch(error){
+        return error;
+    }
+
+    return response;
+}
+
 
 export {
     login,
     signup,
     logout,
-    createPost
+    createPost,
+    singlePost,
+    getallPosts
 }
 
 

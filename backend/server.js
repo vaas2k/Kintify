@@ -19,8 +19,8 @@ app.use(cors({
     credentials : true,
     origin:'http://localhost:3000'
 }))
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '40mb' }));
+app.use(express.urlencoded({ extended: true, limit: '40mb' }));
 DBConnect();
 
 app.use(router);

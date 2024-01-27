@@ -11,7 +11,8 @@ const newPost = new Schema({
     videoPath : {type : String},
     allowcomment : {type : Boolean},
     tags : [{type : String}],
-    link : {type : String}
+    link : {type : String},
+    likes : {type : Number}
 })
 
 module.exports = mongoose.model('POST',newPost,'post-kintify');

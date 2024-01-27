@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import useAutoLogin from '../../hooks/autologin';
 import { Hypnosis } from 'react-cssfx-loading';
 import Home from '../home/home';
+import { useNavigate } from 'react-router-dom';
 
 const Front = () => {
   
@@ -13,10 +14,10 @@ const Front = () => {
   const islogged = useSelector((state)=> { return state.user.auth});
   const showLog = useSelector((state) => { return state.log.login});
   const showsign = useSelector((state) => {return state.log.sign});
-
+  const navigate = useNavigate();
 
   if(islogged){
-    return (<Home/>)
+    return (navigate('/home'));
   }
   else if(loading){
     return (<div

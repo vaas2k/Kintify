@@ -34,20 +34,19 @@ const post = {
             console.log(error)
             return next(error);
         }
-        console.log(req.body)
-
+        
         const {title , description ,link , photo , video , author , tags , allowcomment } = req.body;
         // save image
         let responce ;
         try{
-
-            if(photo){
+            
+            if(photo != 'null' &&  video === 'null'){
                 responce = await cloudinary.uploader.upload(photo, {
                     resource_type : "image",
                     public_id : "posts-kintify"
                 })
             }
-            else if(video){
+            else if(video != 'null' && photo === 'null'){
                 responce = await cloudinary.uploader.upload(video, {
                     resource_type : "video",
                     public_id : "posts-kintify"
@@ -58,26 +57,29 @@ const post = {
         }catch(error){
             return next(error);
         }
+        console.log(req.body)
         // save the data in DB
         let post;
         try{
 
-            if(photo){
+            if(photo != 'null' &&  video === 'null'){
                 post = new POST({
                     title,
                     description,
                     author,
-                    photoPath : responce.secure_url || 'null',
+                    photoPath : responce.secure_url ,
+                    videoPath : 'null',
                     tags,
                     allowcomment,
                     link
                 })
             }
-            else if(video){
+            else if(video != 'null' && photo === 'null'){
                 post = new POST({
                     title,
                     description,
                     author,
+                    photoPath : 'null',
                     videoPath : responce.secure_url || 'null',
                     tags,
                     allowcomment,
@@ -267,6 +269,18 @@ const post = {
 
         return res.status(200).json(allposts);
         
+    }
+    ,
+    async likes(req,res,next) {
+        /* request = { liker-id , post-id , like }
+         get previous likes
+         add + 1
+         update the likes on post DB
+         get tags from post by post id
+         update the top 5 tags in liker DB
+         send responce
+         since we have liker id and we can directly save the tags from post in liker schema
+        */
     }
 }
 
