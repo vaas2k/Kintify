@@ -19,6 +19,7 @@
 }
 .sign h{
     font-size: 13px;
+    font-weight: 900;
 }
 
 
@@ -50,6 +51,7 @@
 .sign button {
     border-width: 15px;
     font-size: 15.5px;
+    font-weight: 1000;
     display: inline-block;
     padding: 10px 20px;
     text-align: center;
@@ -75,6 +77,11 @@
   .logbutton button{
     font-size: 11.5px;
     padding: 9px;
+}
+
+.logbutton{
+    font-weight: 800;
+    color: #ff2626;
 }
 
 

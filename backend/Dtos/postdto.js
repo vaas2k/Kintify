@@ -9,6 +9,7 @@ class postDto {
         this.photo = post.photoPath;
         this.tags = post.tags;
         this.allowcomment = post.allowcomment;
+        this.likes = post.likes
     }
 }
 

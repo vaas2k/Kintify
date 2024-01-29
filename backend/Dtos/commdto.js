@@ -3,6 +3,7 @@ class commDto {
         this.id = comm._id;
         this.content = comm.content;
         this.userimage = comm.userimage;
+        this.username = comm.username;
     }
 }
 

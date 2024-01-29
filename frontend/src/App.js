@@ -36,8 +36,12 @@ const Prot = ({ isAuth }) => {
 
 const App = () => {
 
+  useEffect(()=>{
+    window.localStorage.setItem('post',JSON.stringify({message : 'lmaow'}));
+  },[])
 
   const isAuth = useSelector((state) => { return state.user.auth });
+  //disabled autologin hook cuz of persisting the user state
   useAutoLogin();
 
   let errorredirect;

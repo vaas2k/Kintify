@@ -3,10 +3,13 @@ import h from './home.module.css';
 import { Link } from 'react-router-dom';
 import { getallPosts } from '../../api/internal';
 import { useRef } from 'react';
-
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setPost} from '../../store/postSlice';
+
 const Home = () => {
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const videoRef = useRef();
   // if    photoPath == 'null' display video
@@ -28,14 +31,22 @@ const Home = () => {
       getblogs();
     }, [])
 
+
+    function handlesinglepost(item){
+      dispatch(setPost(item));
+      navigate(`/post/${item.id}`)
+    }
+
   const newposts = post.map((item) => {
-    return (<div className={h.holdimg}>
+    return (<div 
+      className={h.holdimg}
+      onClick={()=>handlesinglepost(item)}
+     >
 
       {item.video === 'null' ?
         (<img
           src={item.photo}
           className={h.postimg}
-          onClick={() => { navigate(`/post/${item.id}`) }}
         ></img>)
         :
         (<video
@@ -45,7 +56,7 @@ const Home = () => {
           onMouseEnter={(e) => e.target.play()}
           onMouseLeave={(e) => e.target.pause()}
           className={h.postvid}
-          onClick={() => { return navigate(`/post/${item.id}`) }}
+          
         >
           <source src={item.video} type={'video/mp4'} />
           Your browser does not support the video tag.

@@ -66,7 +66,7 @@ const singlePost = async (id) => {
 
     let response;
     try{
-        response  = await api.get(`/post/:${id}`);
+        response  = await api.get(`/post/${id}`);
     }catch(error){
         return error;
     }
@@ -86,6 +86,29 @@ const getallPosts = async (id) => {
     return response;
 }
 
+const newComment = async (data) => {
+
+    let response;
+    try{
+        response = await api.post('/comment',data);
+    }catch(error){
+        return error;
+    }
+    return response;
+
+}
+
+const newlike = async(data) => {
+
+    let response;
+    try{
+        response = await api.post('/like',data);
+    }catch(error){
+        return error;
+    }
+    return response;
+}
+
 
 export {
     login,
@@ -93,7 +116,9 @@ export {
     logout,
     createPost,
     singlePost,
-    getallPosts
+    getallPosts,
+    newComment,
+    newlike
 }
 
 

@@ -12,7 +12,7 @@ const newPost = new Schema({
     allowcomment : {type : Boolean},
     tags : [{type : String}],
     link : {type : String},
-    likes : {type : Number}
+    likes : {type : Number, default : 0}
 })
 
 module.exports = mongoose.model('POST',newPost,'post-kintify');

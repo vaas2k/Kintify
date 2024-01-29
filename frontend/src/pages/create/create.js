@@ -195,8 +195,8 @@ const Create = () => {
               errormessage={errors.tags}
             />
             <br />
-            <label htmlFor="allowup">
-              Allow Comments
+            <label htmlFor="allowup" className={c.allow}>
+              Allow Comment
               <input
                 id='allowup'
                 type='checkbox'

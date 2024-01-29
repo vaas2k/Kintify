@@ -14,7 +14,8 @@ const comment = {
             content : Joi.string().required(),
             author : Joi.string().regex(mongodbIdPattern).required(),
             postid : Joi.string().regex(mongodbIdPattern).required(),
-            userimage : Joi.string()
+            userimage : Joi.string(),
+            username : Joi.string()
         })
 
         const {error} = dataCheck.validate(req.body);
@@ -22,7 +23,7 @@ const comment = {
             return next(error);
         }
 
-        const {content , postid , author , userimage} = req.body;
+        const {content , postid , author, username , userimage} = req.body;
         try{
             const check = await POST.findOne({_id : postid});
             if(!check){
@@ -41,14 +42,16 @@ const comment = {
                    author, 
                    postid,
                    content,
-                   userimage 
+                   userimage,
+                   username 
                })
 
             }else{
                 comm = new COMMENT({
                     author, 
                     postid,
-                    content 
+                    content,
+                    username 
                 })
             }
 

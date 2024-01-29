@@ -3,10 +3,15 @@ const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
 const Joi = require('joi');
 const COMMENT = require('../Schemas/comment');
 const POST = require('../Schemas/post');
+const USER = require('../Schemas/user');
+const LIKE = require('../Schemas/likes');
 const cloudinary = require('cloudinary').v2;
 const postDto = require('../Dtos/postdto');
+const userDto = require('../Dtos/usedto');
 const { CLOUD_NAME, API_KEY, API_SECRET } = require('../configs/secret');
 const { JSONCookies } = require('cookie-parser');
+const commDto = require('../Dtos/commdto');
+
 
 
 
@@ -89,6 +94,11 @@ const post = {
             
 
             await post.save();
+            const newlike = new LIKE({
+                post_id : post._id,
+                likes : 0
+            })
+            await newlike.save();
         }catch(error){
             return next(error);
         }
@@ -224,6 +234,7 @@ const post = {
         return res.status(200).json(allposts);
     },
     async getSinglePost(req, res, next){
+        
         const {id} = req.params
         let post;
         try{
@@ -238,9 +249,33 @@ const post = {
         }catch(error){
             return next(error);
         }
+        let comments;
+        try{
+            comments = await COMMENT.find({postid : id});
+        }
+        catch(error){
+            return next(error);
+        }
+        let poster ;
+        try{
+            poster = await USER.findOne({_id : post.author});
+        }
+        catch(error){ return next(error);}
+        let likes
+        try{
+            likes = await LIKE.findOne({post_id : post._id});
+        }
+        catch(error){ return next(error);}
 
         const newpost = new postDto(post);
-        return res.status(200).json(newpost);
+        if(poster){
+            const user = new userDto(poster);
+            return res.status(200).json({user : {username:user.username , photo:user.photo , likes : post.likes} , comments, likes});
+        }
+            
+        return res.status(200).json({user : {username:'dont Exist'}, newcomments, likes});
+        
+
     },
     async postByuser(req, res, next){
 
@@ -271,16 +306,49 @@ const post = {
         
     }
     ,
-    async likes(req,res,next) {
+    async like(req,res,next) {
         /* request = { liker-id , post-id , like }
-         get previous likes
-         add + 1
-         update the likes on post DB
+         if user already liked the post then remove decrease likes by 1 
+         else increase likes by one 
          get tags from post by post id
          update the top 5 tags in liker DB
          send responce
          since we have liker id and we can directly save the tags from post in liker schema
         */
+
+       const check = Joi.object({
+           liker_id  : Joi.string().pattern(mongodbIdPattern),
+           post_id : Joi.string().pattern(mongodbIdPattern),
+        })
+        
+        const {error} = check.validate(req.body);
+        if(error){
+            return next(error);
+        }
+        const {post_id , liker_id} = req.body;
+
+        try{
+            const check_like = await LIKE.findOne({post_id : post_id},{ liker_id: liker_id });
+            if (!check_like) {
+                const newlike = new LIKE({
+                    liker_id,
+                    post_id
+                })
+                await newlike.save();
+                const post = await POST.findOne({_id : post_id});
+                const like = post.likes + 1;
+                await post.updateOne({likes : like});
+            }
+            else{
+                // if user like laready exist then 
+                return res.status(200).json({message: 'unliked'});
+            }
+        }catch(error){
+            console.log(error);
+            return next(error);
+        }
+        return res.status(200).json({message : 'liked'});
+        
     }
 }
 
