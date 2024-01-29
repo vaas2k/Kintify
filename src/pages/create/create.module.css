@@ -3,6 +3,7 @@
   color: #ff2626;
 }
 
+
 .mainpost h2  {
   margin: 30px;
 }
@@ -16,6 +17,8 @@
 
 .imgupload {
   text-align: center;
+  color: #ff2626;
+  font-weight: bold;
 }
 
 .mainpost input[type="file"] {
@@ -45,6 +48,9 @@
 .uploadButton:hover {
   background-color: #393838;
   color: white;
+  .imgupload p {
+    color: #EFEFEF;
+  }
 }
 
 .uploadButton:active {
@@ -217,4 +223,8 @@
 
 .postform1 textarea{
   width: 340px;
+}
+
+.allow{
+  font-weight: 800;
 }

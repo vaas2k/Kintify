@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Loader from './components/Loading/Loading';
 import { Hypnosis } from 'react-cssfx-loading';
+import SinglePost from './pages/singlePost/singlePost';
 
 
 
@@ -35,10 +36,21 @@ const Prot = ({ isAuth }) => {
 
 const App = () => {
 
+  useEffect(()=>{
+    window.localStorage.setItem('post',JSON.stringify({message : 'lmaow'}));
+  },[])
 
   const isAuth = useSelector((state) => { return state.user.auth });
-
+  //disabled autologin hook cuz of persisting the user state
   useAutoLogin();
+
+  let errorredirect;
+  if(isAuth){
+    errorredirect = '/home'
+  }else{
+    errorredirect = '/'
+  }
+
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
       <BrowserRouter>
@@ -47,7 +59,7 @@ const App = () => {
           <Route path="*" element={
             <div style={{ textAlign: 'center' }}>
               <h1>Error 404</h1>
-              <a href='/'>go back</a>
+              <a href={errorredirect}>go back</a>
             </div>
           } />
           <Route path='/' element={<Front />} />
@@ -67,6 +79,7 @@ const App = () => {
           <Route path="/explore" element={<Explore />} />
 
           <Route path="/image" element={<Protected isAuth={isAuth}><Photo /></Protected>} />
+          <Route path="/post/:id" element={<Protected isAuth={isAuth}><SinglePost /></Protected>}/>
 
         </Routes>
       </BrowserRouter>
