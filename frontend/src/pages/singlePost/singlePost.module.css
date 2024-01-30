@@ -9,6 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     
 }
 
@@ -190,7 +191,7 @@
 
 /* profile image bar*/
 .profile{
-    box-shadow: rgba(192, 190, 190, 0.45) 0px 25px 20px -20px;    display: flex;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     margin-left: 40px;

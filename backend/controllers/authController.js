@@ -94,7 +94,7 @@ const users = {
                     username,
                     email,
                     password : hash_password,
-                    photoPath : imageUrl || 'null'
+                    photoPath : imageUrl || 'null',
                 })
             }else{
                 user = new USER({
@@ -277,6 +277,11 @@ const users = {
         res.clearCookie('refreshtoken');
         // send auth : false in responce
         return res.status(200).json({auth : false});
+    },
+    async updateTags(req, res, next){
+        // get user_id and tags in request
+        // check user exist
+        // save update the tags in user DB => {tags: tags}
     }
 }
 

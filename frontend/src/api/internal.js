@@ -108,6 +108,16 @@ const newlike = async(data) => {
     }
     return response;
 }
+const similar_tags_posts = async (tags) => {
+    let response;
+    try{
+        response = await api.post('/sameposts' , tags);
+    }catch(error){
+        return error;
+    }
+    return response;
+
+}
 
 
 export {
@@ -118,7 +128,8 @@ export {
     singlePost,
     getallPosts,
     newComment,
-    newlike
+    newlike,
+    similar_tags_posts
 }
 
 

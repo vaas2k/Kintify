@@ -21,6 +21,8 @@ router.get('/posts',post.getAllPost);
 router.get('/post/:id',post.getSinglePost);
 router.get('/postbyuser/:id',post.postByuser);
 
+router.post('/sameposts',auth,post.sametagsposts);
+
 
 // for comments 
 

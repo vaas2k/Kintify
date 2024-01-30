@@ -261,16 +261,16 @@ const post = {
             poster = await USER.findOne({_id : post.author});
         }
         catch(error){ return next(error);}
-        let likes
+        let likes = [];
         try{
-            likes = await LIKE.findOne({post_id : post._id});
+            likes = await LIKE.find({post_id : post._id});
         }
         catch(error){ return next(error);}
 
         const newpost = new postDto(post);
         if(poster){
             const user = new userDto(poster);
-            return res.status(200).json({user : {username:user.username , photo:user.photo , likes : post.likes} , comments, likes});
+            return res.status(200).json({user : {username:user.username , photo:user.photo , likes : post.likes} , comments, likes , });
         }
             
         return res.status(200).json({user : {username:'dont Exist'}, newcomments, likes});
@@ -328,20 +328,23 @@ const post = {
         const {post_id , liker_id} = req.body;
 
         try{
-            const check_like = await LIKE.findOne({post_id : post_id},{ liker_id: liker_id });
+            const check_like = await LIKE.findOne({post_id : post_id , liker_id: liker_id });
+            const post = await POST.findOne({_id : post_id});
             if (!check_like) {
                 const newlike = new LIKE({
                     liker_id,
                     post_id
                 })
                 await newlike.save();
-                const post = await POST.findOne({_id : post_id});
                 const like = post.likes + 1;
                 await post.updateOne({likes : like});
             }
             else{
-                // if user like laready exist then 
-                return res.status(200).json({message: 'unliked'});
+                // if user like laready exist then
+                await LIKE.deleteOne({post_id : post_id , liker_id: liker_id });
+                const like = post.likes - 1;
+                await post.updateOne({likes : like}); 
+                return res.status(201).json({message: 'unliked'});
             }
         }catch(error){
             console.log(error);
@@ -349,6 +352,32 @@ const post = {
         }
         return res.status(200).json({message : 'liked'});
         
+    },
+    async sametagsposts(req, res, next) {
+        // get tags in req
+        const checktags = Joi.object({
+            tags : Joi.array().items(Joi.string())
+        })
+        const {error} = checktags.validate(req.body);
+        // search posts that matchs the current tags
+        const {tags , id } = req.body;
+        let posts = [] ;
+        let newposts = [];
+        try{
+            posts = await POST.find({ tags: { $elemMatch: { $in : tags } } });
+            for(let i = 0 ; i < posts.length ;i++){
+                if(posts[i]._id.equals(id)){
+                    continue;
+                }
+                const newpost = new postDto(posts[i]);
+                newposts.push(newpost);
+            }
+        }catch(error){
+            console.log(error);
+            return next(error);
+        }
+        // send in responce;
+        return res.status(200).json({newposts});
     }
 }
 
