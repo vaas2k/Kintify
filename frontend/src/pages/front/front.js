@@ -5,7 +5,6 @@ import Sign from '../../components/login sign/sign'
 import { useSelector } from 'react-redux';
 import useAutoLogin from '../../hooks/autologin';
 import { Hypnosis } from 'react-cssfx-loading';
-import Home from '../home/home';
 import { useNavigate } from 'react-router-dom';
 
 const Front = () => {

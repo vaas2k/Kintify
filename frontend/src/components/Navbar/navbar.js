@@ -29,6 +29,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const profileimage = useSelector((state) => { return state.user.photo})
   const islogged = useSelector((state) => { return state.user.auth});
+  const username = useSelector((state) => { return state.user.username});
   
   // handle the logout 
   async function handlelogout(){
@@ -157,7 +158,7 @@ const Navbar = () => {
         </div>
         {renderRightSection()}
       </div>
-      <Link to={'/profile'}><img src={ profileimage ? profileimage : require('../../images/noooaccc.png')} className={n.proimg} alt='Profile' /></Link>
+      <Link to={`/profile/${username}`}><img src={ profileimage ? profileimage : require('../../images/noooaccc.png')} className={n.proimg} alt='Profile' /></Link>
     </div>
   );
 };

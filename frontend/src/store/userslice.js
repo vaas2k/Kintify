@@ -5,6 +5,7 @@ const initialState = {
     auth: false,
     username: '',
     photo: undefined,
+    name : ''
 }
 
 
@@ -13,18 +14,20 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action) => {
-            const { _id, photo, username, auth } = action.payload;
+            const { _id, name , photo, username, auth } = action.payload;
             
             state._id = _id;
             state.photo = photo;
             state.username = username;
             state.auth = auth;
+            state.name = name;
         },
         resetUser: (state, action) => {
             state._id = '';
             state.photo = '';
             state.username = '';
             state.auth = false;
+            state.name = ''
         }
     }
 })

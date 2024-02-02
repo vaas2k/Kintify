@@ -94,3 +94,14 @@
     color: #ff2626;
     font-weight: 600;
 }
+
+.pas{
+    display: flex;
+}
+.show{
+    transition: color 0.5s ease;
+    cursor: pointer;
+}
+.show:hover{
+    color: red;
+}

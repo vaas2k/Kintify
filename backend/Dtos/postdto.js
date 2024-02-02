@@ -10,6 +10,9 @@ class postDto {
         this.tags = post.tags;
         this.allowcomment = post.allowcomment;
         this.likes = post.likes
+        this.authorname = post.authorName;
+        this.authorphoto = post.authorPhoto
+
     }
 }
 

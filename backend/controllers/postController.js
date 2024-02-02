@@ -31,7 +31,9 @@ const post = {
             video : Joi.string(),
             allowcomment : Joi.boolean(),
             tags : Joi.array().items(Joi.string()),
-            link : Joi.string()
+            link : Joi.string(),
+            authorName : Joi.string(),
+            authorPhoto: Joi.string()
         })
         // validate users database
         const { error } = dataCheck.validate(req.body); 
@@ -40,7 +42,7 @@ const post = {
             return next(error);
         }
         
-        const {title , description ,link , photo , video , author , tags , allowcomment } = req.body;
+        const {title , description ,link , photo , video , author , tags , allowcomment , authorName,authorPhoto } = req.body;
         // save image
         let responce ;
         try{
@@ -64,6 +66,7 @@ const post = {
         }
         console.log(req.body)
         // save the data in DB
+        
         let post;
         try{
 
@@ -76,7 +79,9 @@ const post = {
                     videoPath : 'null',
                     tags,
                     allowcomment,
-                    link
+                    link,
+                    authorPhoto,
+                    authorName,
                 })
             }
             else if(video != 'null' && photo === 'null'){
@@ -88,7 +93,9 @@ const post = {
                     videoPath : responce.secure_url || 'null',
                     tags,
                     allowcomment,
-                    link
+                    link,
+                    authorPhoto,
+                    authorName,
                 })
             }
             
@@ -219,6 +226,7 @@ const post = {
     },
     async getAllPost(req, res, next){
         let posts = [];
+        let poster;
         try{
             posts = await POST.find();
         }catch(error){
@@ -226,9 +234,13 @@ const post = {
         }
         let allposts = [];
         
+        for (let i = 0; i < posts.length; i++) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [posts[i], posts[j]] = [posts[j], posts[i]];
+        }
         for(let i = 0; i < posts.length; i++){
-            const post = new postDto(posts[i]);
-            allposts.push(post);
+            const newpost = new postDto(posts[i]);
+            allposts.push(newpost);
         }
 
         return res.status(200).json(allposts);
@@ -279,6 +291,7 @@ const post = {
     },
     async postByuser(req, res, next){
 
+        console.log(req.params.id);
         const dataCheck = Joi.object({
             id : Joi.string().regex(mongodbIdPattern).required(),           
         })
@@ -287,6 +300,7 @@ const post = {
             return next(error);
         }
         
+        console.log(req.params);
         const {id} = req.params;
         let posts = [];
         try{

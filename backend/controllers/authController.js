@@ -1,7 +1,9 @@
 
 const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
+const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
 
 const USER = require('../Schemas/user');
+const FOLLOW = require('../Schemas/following');
 const dotenv = require("dotenv").config();
 const cloudinary = require('cloudinary').v2;
 const Joi = require('joi');
@@ -107,6 +109,11 @@ const users = {
             }
 
             user = await user.save();
+            const followings = new FOLLOW({
+                userID : user._id
+            })
+
+            await followings.save();
 
         }catch(error){
             return next(error);
@@ -278,11 +285,7 @@ const users = {
         // send auth : false in responce
         return res.status(200).json({auth : false});
     },
-    async updateTags(req, res, next){
-        // get user_id and tags in request
-        // check user exist
-        // save update the tags in user DB => {tags: tags}
-    }
+    
 }
 
 module.exports = users;

@@ -8,12 +8,14 @@ import { setUser } from '../../store/userslice';
 import { useFormik } from 'formik';
 import {logschema} from '../../schema/signschema';
 import TextInput from '../textinput/textinput';
+import { Eye } from 'lucide-react';
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const toggleSignComp = () => { dispatch(togglesign())};
     const [logerror , setLogerror] = useState(false);
+    const [show , setShow] = useState(false);
 
     const {values, handleChange , touched , handleBlur} = useFormik({
         initialValues : {
@@ -38,7 +40,8 @@ const Login = () => {
                 username : responce.data.username,
                 _id : responce.data._id,
                 photo : responce.data.photo,
-                auth : responce.data.auth
+                auth : responce.data.auth,
+                name : responce.data.name
             }
             console.log(responce.data);
             dispatch(setUser(user));
@@ -69,14 +72,17 @@ const Login = () => {
                         />
 
                     <h>Password</h>
+                    <span className={ls.pas}>
                     <TextInput
-                        type='password'
+                        type={show ? 'text' : `password`}
                         onChange={handleChange}
                         name='password'
                         value={values.password}
                         placeholder='password'
                         required
-                    />
+                        />
+                        <div  onClick={()=>setShow(!show)}><Eye color={show ? 'red' : 'black'} width={'20px'} style={{marginTop:'6px' , marginLeft:'3px'}} className={ls.show}/></div>
+                    </span>
 
                 </form>
                     {logerror && <p style={{fontSize:'10px' , color:'red'}}>username or password not matched</p>}

@@ -9,7 +9,9 @@ const initialState = {
     description:'',
     tags : [],
     allowcomment:null,
-    likes:''
+    likes:'',
+    authorname : '',
+    authorphoto : ''
 }
 
 const postSlice = createSlice({
