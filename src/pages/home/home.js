@@ -1,26 +1,21 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import h from './home.module.css';
 import { Link } from 'react-router-dom';
-import { getallPosts } from '../../api/internal';
+import { getallPosts , similar_tags_posts } from '../../api/internal';
 import { useRef } from 'react';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPost} from '../../store/postSlice';
 
-const Home = () => {
+const Home = (props) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const videoRef = useRef();
-  // if    photoPath == 'null' display video
-  // elif  videoPath == 'null' display image
-  const mediaType = 'video'
   const [post, setPosts] = useState([]);
 
-
-
     useEffect(() => {
-      async function getblogs() {
+      async function getposts() {
         let response = await getallPosts();
         if (response.status === 200) {
           setPosts(response.data);
@@ -28,8 +23,28 @@ const Home = () => {
           console.log(response.message);
         }
       }
-      getblogs();
-    }, [])
+      async function gettagsposts() {
+        const data = {
+          tags : props.tags,
+          id : props.id
+        }
+        let response = await similar_tags_posts(data);
+        if (response.status === 200) {
+          setPosts(response.data.newposts);
+        } else if (response.status !== 200) {
+          console.log(response.message);
+        }
+      }
+      if(!props.tags){
+        getposts()
+      }else{
+        gettagsposts();
+        props.handleReload(props.reload)
+      }
+
+      window.sessionStorage.setItem('tags',JSON.stringify(props.tags));
+
+    }, [props.tags])
 
 
     function handlesinglepost(item){
