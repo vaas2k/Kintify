@@ -17,7 +17,7 @@ const Create = () => {
   const [previewMedia, setPreview] = useState('');
   const [mediaType, setMediaType] = useState('');
   const [radiocheck, setradioCheck] = useState('');
-  const id = useSelector((state) => { return state.user._id });
+  const user = useSelector((state) => { return state.user });
 
   const { checked, values, touched, handleBlur, handleChange, errors } = useFormik({
     initialValues: {
@@ -70,7 +70,9 @@ const Create = () => {
       allowcomment: values.allowcomment,
       photo: mediaType === 'image' ? previewMedia : 'null',
       video: mediaType === 'video' ? previewMedia : 'null',
-      author: id
+      author: user._id,
+      authorName : user.username,
+      authorPhoto : user.photo
     }
     console.log(post);
 

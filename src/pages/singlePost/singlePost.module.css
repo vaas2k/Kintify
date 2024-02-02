@@ -227,6 +227,7 @@
 .hh:hover{
     color: #ff2626;
     transition: color 0.5s ease-in;
+    cursor: pointer;
 }
 
 

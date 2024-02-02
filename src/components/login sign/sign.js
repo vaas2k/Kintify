@@ -8,6 +8,7 @@ import {signschema} from '../../schema/signschema'
 import TextInput from '../textinput/textinput';
 import Photo from '../photo/photo';
 import { togglelog } from '../../store/logslic';
+import { Eye } from 'lucide-react';
 
 
 const Sign = () => {
@@ -16,6 +17,7 @@ const Sign = () => {
     const toggleLoginComp = () => { dispatch(togglelog())};
 
     const [showupload, setupload] = useState(false);
+    const [showpass, setShowPass] = useState(false);
     const dispatch = useDispatch();
 
     function handlesign(e) {
@@ -82,8 +84,9 @@ const Sign = () => {
                     />
 
                     <h>Password</h>
+                    <span className={s.pas}>
                     <TextInput
-                        type='password'
+                        type={showpass ? 'text' : 'password'}
                         name='password'
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -92,10 +95,12 @@ const Sign = () => {
                         error={errors.password && touched.password ? 1 : undefined}
                         errormessage={errors.password}
                     />
+                    <div  onClick={()=>setShowPass(!showpass)}><Eye color={showpass ? 'red' : 'black'} width={'20px'} style={{marginTop:'6px' , marginLeft:'3px'}} className={s.show}/></div>
+                    </span>
 
                     <h>Confirm Password</h>
                     <TextInput
-                        type='password'
+                        type={showpass ? 'text' : 'password'}
                         name='confirmPassword'
                         onChange={handleChange}
                         onBlur={handleBlur}

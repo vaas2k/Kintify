@@ -3,35 +3,19 @@ import './App.css';
 import Navbar from './components/Navbar/navbar';
 import Login from './components/login sign/login-sign';
 import Sign from './components/login sign/sign';
-import Home from './pages/home/home';
+import Home from './components/home/home';
 import Feed from './pages/feeds/feeds';
 import Create from './pages/create/create';
 import Profile from './pages/profile/profile';
-import { Routes, Route, BrowserRouter, u, BrowserRouterseNavigate } from 'react-router-dom';
+import { Routes, Route, BrowserRouter} from 'react-router-dom';
 import Explore from './pages/explore/explore';
 import Front from './pages/front/front';
 import Photo from './components/photo/photo';
-import { refresh } from './api/internal';
 import useAutoLogin from './hooks/autologin';
-import { Protected, Protected1 } from './components/protected/protected'
+import { Protected,} from './components/protected/protected'
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import Loader from './components/Loading/Loading';
-import { Hypnosis } from 'react-cssfx-loading';
+import { useEffect,} from 'react';
 import SinglePost from './pages/singlePost/singlePost';
-
-
-
-
-const Prot = ({ isAuth }) => {
-  if (isAuth) {
-    return <Home />
-  }
-  else {
-    return <Front />
-  }
-}
-
 
 
 const App = () => {
@@ -41,7 +25,6 @@ const App = () => {
   },[])
 
   const isAuth = useSelector((state) => { return state.user.auth });
-  //disabled autologin hook cuz of persisting the user state
   useAutoLogin();
 
   let errorredirect;
@@ -51,6 +34,7 @@ const App = () => {
     errorredirect = '/'
   }
 
+  //useTags();
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
       <BrowserRouter>
@@ -72,7 +56,7 @@ const App = () => {
 
           <Route path="/feed" element={<Feed />} />
 
-          <Route path={`/profile`} element={<Protected isAuth={isAuth}><Profile /></Protected>} />
+          <Route path={`/profile/:username`} element={<Protected isAuth={isAuth}><Profile /></Protected>} />
 
           <Route path="/create" element={<Protected isAuth={isAuth}><Create /></Protected>} />
 
@@ -121,7 +105,6 @@ export default App;
 () => users can follow and unfollow each other 
 
 () => Chat component  
-
 () => only users that follow each other can text each other (or maybe add privacy to allow user who can text them)
  
 

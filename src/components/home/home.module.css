@@ -18,7 +18,6 @@
 .postimg:hover{
     opacity: 70%;
     cursor: pointer;
-    transform: scale(1.1);
 }
 
 .postvid {
@@ -35,7 +34,6 @@
 
 .postvid:hover{
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    transform: scale(1.1);
     cursor: pointer;
 }
 
@@ -55,4 +53,27 @@
     .posts {
         column-count: 4;
     }
+}
+
+
+.pfp img{
+    width: 20px;
+    border-radius: 20px;
+}
+.pfp{
+    cursor: pointer;
+    margin-top: -14px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 13.4px;
+    opacity: 70%;
+}
+
+.pfp h{
+    text-decoration: none;
 }

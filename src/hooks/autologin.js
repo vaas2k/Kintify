@@ -24,7 +24,8 @@ const useAutoLogin = () => {
                         username : response.data.username,
                         _id : response.data._id,
                         photo : response.data.photo,
-                        auth : response.data.auth
+                        auth : response.data.auth,
+                        name : response.data.name
                     }
                     dispatch(setUser(user));
                 }

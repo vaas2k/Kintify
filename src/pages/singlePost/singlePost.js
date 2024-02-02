@@ -1,19 +1,15 @@
-import { useFetcher, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import sp from "./singlePost.module.css";
-import postimage from '../../images/6d2a0a82f57a6bbc829f6d882abb35fa.jpg'
 import TextInput from '../../components/textinput/textinput'
-import { Heart, HeartPulse, Plus } from 'lucide-react';
-import { useDispatch, useSelector } from "react-redux";
+import { Heart, HeartPulse } from 'lucide-react';
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { singlePost, newComment, newlike } from "../../api/internal";
-import { current } from "@reduxjs/toolkit";
-import { setPost } from '../../store/postSlice';
-import Home from "../home/home";
+import Home from "../../components/home/home";
 
 const SinglePost = () => {
     const params = useParams();
     const postid = params.id;
-    const dispatch = useDispatch();
     const currentuser = useSelector((state) => { return state.user });
     const currentpost = useSelector((state) => { return state.post });
 
@@ -26,7 +22,6 @@ const SinglePost = () => {
     })
     const [poster, setPoster] = useState({})
     const [comments, setComments] = useState([]);
-    const [likes, setLikes] = useState([]);
     const [reload, setReload] = useState(false);
     const [liked, setLiked] = useState()
 
@@ -59,7 +54,6 @@ const SinglePost = () => {
         getuserofpost();
     }, [reload , currentpost])
 
-    console.log(likes);
 
     // function to send comment to server
     async function sendcomment() {
@@ -80,7 +74,6 @@ const SinglePost = () => {
         }
     }
 
-
     // send like ot server
     async function sendLike() {
         const data = {
@@ -92,7 +85,6 @@ const SinglePost = () => {
             response = await newlike(data);
             if (response.status === 200) {
                 setReload(!reload);
-                console.log(liked);
 
             }
             else if (response.status === 201) {
@@ -101,6 +93,23 @@ const SinglePost = () => {
             }
         } catch (error) {
             console.log(error);
+        }
+
+        // if post was liked save the tags in session storage
+        if(response.status === 200){
+            let getTags = window.sessionStorage.getItem('Liked-tags');
+            console.log('before --> ',getTags);
+            if(getTags){
+                getTags = JSON.parse(getTags);
+            }else{
+                getTags = [];
+            }
+            for(let i = 0; i < currentpost.tags.length ; i++){
+                getTags.push(currentpost.tags[i]);
+            }
+            window.sessionStorage.setItem('Liked-tags',JSON.stringify(getTags));
+
+            console.log('after --> ',getTags);
         }
     }
 
@@ -113,7 +122,7 @@ const SinglePost = () => {
             <div className={sp.mainpost}>
                 <div className={sp.image}>
                     {currentpost.video === 'null' ?
-                        <img className={sp.img} src={currentpost.photo} />
+                        <img alt="nill" className={sp.img} src={currentpost.photo} />
                         :
                         <video controls autoPlay className={sp.img}>
                             <source src={currentpost.video} />
@@ -123,15 +132,16 @@ const SinglePost = () => {
 
                 <div className={sp.postdetails}>
                     <div className={sp.details}>
-                        <div className={sp.profile}>
+                       <Link to={`/profile/${currentpost.authorname}`}> <div className={sp.profile}>
                             <img
+                                alt="nill"
                                 className={sp.profileimg}
                                 style={{ width: '35px', borderRadius: '20px' }}
                                 src={poster.photo}
                             />
                             <p>{poster.username}</p>
-
                         </div>
+                        </Link>
                         <br />
                         <p1>
                             {currentpost.description}
@@ -142,7 +152,7 @@ const SinglePost = () => {
                         <h3>Comments - ({comments.length})</h3>
                         {comments.map((comm) => {
                             return (<div className={sp.comment}>
-                                <img src={comm.userimage} />
+                                <img alt="nill" src={comm.userimage} />
                                 <p> <h>{comm.username} - </h>{comm.content}</p>
                             </div>)
                         })}
@@ -151,6 +161,7 @@ const SinglePost = () => {
                     {currentpost.allowcomment === true ?
                         (<div className={sp.postcomment}>
                             <img
+                                alt="nill"
                                 style={{ width: '35px', borderRadius: '20px' }}
                                 src={currentuser.photo}
                             />

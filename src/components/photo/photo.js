@@ -66,7 +66,8 @@ const Photo = (props) => {
           _id : responce.data.newuser._id,
           username : responce.data.newuser.username,
           auth : responce.data.newuser.auth,
-          photo : responce.data.newuser.photo
+          photo : responce.data.newuser.photo,
+          name : responce.data.newuser.name
         }
         dispatch(setUser(user));
         navigate('/home');

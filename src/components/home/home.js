@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import h from './home.module.css';
 import { Link } from 'react-router-dom';
 import { getallPosts , similar_tags_posts } from '../../api/internal';
@@ -35,37 +35,60 @@ const Home = (props) => {
           console.log(response.message);
         }
       }
-      if(!props.tags){
-        getposts()
-      }else{
+      if(props.posts){
+        setPosts(props.posts);
+      }
+      else if(props.tags){
         gettagsposts();
         props.handleReload(props.reload)
       }
+      else{
+        getposts()
+      }
 
-      window.sessionStorage.setItem('tags',JSON.stringify(props.tags));
+      
 
-    }, [props.tags])
+    }, [props.tags , props.posts])
 
 
     function handlesinglepost(item){
       dispatch(setPost(item));
+
+      // if post was Clicked save the tags in session storage
+      let getTags = window.sessionStorage.getItem('Post-Saw-tags');
+      console.log('before --> ',getTags);
+      if(getTags){
+          getTags = JSON.parse(getTags);
+      }else{
+          getTags = [];
+      }
+      for(let i = 0; i < item.tags.length ; i++){
+          getTags.push(item.tags[i]);
+      }
+      window.sessionStorage.setItem('Post-Saw-tags',JSON.stringify(getTags));
+
+      console.log('after --> ',getTags);
+
       navigate(`/post/${item.id}`)
     }
 
   const newposts = post.map((item) => {
     return (<div 
       className={h.holdimg}
-      onClick={()=>handlesinglepost(item)}
+      
      >
 
       {item.video === 'null' ?
         (<img
+        alt='nill'
+          onClick={()=>handlesinglepost(item)}
           src={item.photo}
           className={h.postimg}
         ></img>)
         :
         (<video
         ref={videoRef}
+          onClick={()=>handlesinglepost(item)}
           loop
           muted="muted"
           onMouseEnter={(e) => e.target.play()}
@@ -77,6 +100,7 @@ const Home = (props) => {
           Your browser does not support the video tag.
         </video>)
       }
+      <Link to={`/profile/${item.authorname}`}><div className={h.pfp}><img alt='nill' src={item.authorphoto}/> <h>{item.authorname}</h></div></Link>
     </div>)
   })
 
