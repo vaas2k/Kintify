@@ -7,6 +7,7 @@ const FOLLOW = require('../Schemas/following');
 const dotenv = require("dotenv").config();
 const Joi = require('joi');
 const userDto = require('../Dtos/usedto');
+const CHAT = require('../Schemas/chatScheme');
 
 
 const usersProfile = {
@@ -114,7 +115,19 @@ const usersProfile = {
         }
 
         return res.status(200).json({message : 'changed'});
-    }
+    },
+    async getUserChats (req, res, next) { 
+
+        const { id } = req.params;
+        console.log(req.body);
+        let chats ;
+        try{
+            chats = await CHAT.find({userID : id });
+        }catch(error){
+            return next(error);
+        }
+        return res.status(200).json({chats});
+    },
 }
 
 module.exports = usersProfile;

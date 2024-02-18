@@ -5,6 +5,8 @@ const COMMENT = require('../Schemas/comment');
 const POST = require('../Schemas/post');
 const USER = require('../Schemas/user');
 const LIKE = require('../Schemas/likes');
+const FOLLOW = require('../Schemas/following');
+const NOTIFICATION = require('../Schemas/notifiactions');
 const cloudinary = require('cloudinary').v2;
 const postDto = require('../Dtos/postdto');
 const userDto = require('../Dtos/usedto');
@@ -23,6 +25,7 @@ cloudinary.config({
 const post = {
     async create_post(req, res, next) {
         // get data from users
+        console.log(req.body);
         const dataCheck = Joi.object({
             title : Joi.string().required(),
             description : Joi.string().required(),
@@ -31,9 +34,9 @@ const post = {
             video : Joi.string(),
             allowcomment : Joi.boolean(),
             tags : Joi.array().items(Joi.string()),
-            link : Joi.string(),
             authorName : Joi.string(),
-            authorPhoto: Joi.string()
+            authorPhoto: Joi.string(),
+            userlinks : Joi.string()
         })
         // validate users database
         const { error } = dataCheck.validate(req.body); 
@@ -42,7 +45,7 @@ const post = {
             return next(error);
         }
         
-        const {title , description ,link , photo , video , author , tags , allowcomment , authorName,authorPhoto } = req.body;
+        const {title , description ,userlinks , photo , video , author , tags , allowcomment , authorName,authorPhoto } = req.body;
         // save image
         let responce ;
         try{
@@ -50,13 +53,11 @@ const post = {
             if(photo != 'null' &&  video === 'null'){
                 responce = await cloudinary.uploader.upload(photo, {
                     resource_type : "image",
-                    public_id : "posts-kintify"
                 })
             }
             else if(video != 'null' && photo === 'null'){
                 responce = await cloudinary.uploader.upload(video, {
                     resource_type : "video",
-                    public_id : "posts-kintify"
                 })
             }
             
@@ -79,7 +80,7 @@ const post = {
                     videoPath : 'null',
                     tags,
                     allowcomment,
-                    link,
+                    userlinks ,
                     authorPhoto,
                     authorName,
                 })
@@ -93,7 +94,7 @@ const post = {
                     videoPath : responce.secure_url || 'null',
                     tags,
                     allowcomment,
-                    link,
+                    userlinks ,
                     authorPhoto,
                     authorName,
                 })
@@ -109,6 +110,7 @@ const post = {
         }catch(error){
             return next(error);
         }
+
         // return Dto in responce
         const newpost = new postDto(post);
         return res.status(200).json(newpost);
@@ -124,7 +126,7 @@ const post = {
             video : Joi.string(),
             allowcomment : Joi.boolean().required(),
             tags : Joi.array().items(Joi.string()),
-            link: Joi.string()
+            userlinks: Joi.string()
         })
         
         const { error } = dataCheck.validate(req.body); 
@@ -164,7 +166,7 @@ const post = {
                     description,
                     photoPath : responce.secure_url || 'null',
                     tags,
-                    link
+                    userlinks
                 }) 
             }
             else if(video){
@@ -180,7 +182,7 @@ const post = {
                     description,
                     videoPath : responce.secure_url || 'null',
                     tags,
-                    link
+                    userlinks
                 })
             }
             else{
@@ -191,7 +193,7 @@ const post = {
                     author,
                     description,
                     tags,
-                    link
+                    userlinks
                 }) 
             }
             
@@ -226,7 +228,6 @@ const post = {
     },
     async getAllPost(req, res, next){
         let posts = [];
-        let poster;
         try{
             posts = await POST.find();
         }catch(error){
@@ -242,7 +243,7 @@ const post = {
             const newpost = new postDto(posts[i]);
             allposts.push(newpost);
         }
-
+        
         return res.status(200).json(allposts);
     },
     async getSinglePost(req, res, next){
@@ -279,13 +280,13 @@ const post = {
         }
         catch(error){ return next(error);}
 
-        const newpost = new postDto(post);
+        post = new postDto(post);
         if(poster){
             const user = new userDto(poster);
-            return res.status(200).json({user : {username:user.username , photo:user.photo , likes : post.likes} , comments, likes , });
+            return res.status(200).json({post, comments, likes });
         }
             
-        return res.status(200).json({user : {username:'dont Exist'}, newcomments, likes});
+        return res.status(200).json({user : {username:'dont Exist'}, comments, likes});
         
 
     },

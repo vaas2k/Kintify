@@ -4,8 +4,9 @@ import TextInput from '../../components/textinput/textinput'
 import { Heart, HeartPulse } from 'lucide-react';
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { singlePost, newComment, newlike } from "../../api/internal";
+import { singlePost, newComment, newlike , Notification } from "../../api/internal";
 import Home from "../../components/home/home";
+import { current } from "@reduxjs/toolkit";
 
 const SinglePost = () => {
     const params = useParams();
@@ -23,7 +24,8 @@ const SinglePost = () => {
     const [poster, setPoster] = useState({})
     const [comments, setComments] = useState([]);
     const [reload, setReload] = useState(false);
-    const [liked, setLiked] = useState()
+    const [liked, setLiked] = useState();
+    const [fullSize , setFullSize] = useState(false);
 
     // fetcing data of post -> post creator eg
     useEffect(() => {
@@ -33,9 +35,9 @@ const SinglePost = () => {
                 response = await singlePost(postid);
                 if (response.status === 200) {
                     setPoster({
-                        username: response.data.user.username,
-                        photo: response.data.user.photo,
-                        likes: response.data.user.likes
+                        username: response.data.post.authorname,
+                        photo: response.data.post.authorphoto,
+                        likes: response.data.post.likes
                     })
                     setComments(response.data.comments);
                     console.log(response.data.likes);
@@ -69,6 +71,22 @@ const SinglePost = () => {
                 userimage: currentuser.photo,
                 content: ''
             })
+            if(currentpost.authorname !== currentuser.username){
+                const data = {
+                    ID : currentuser._id,
+                    Name : currentuser.username,
+                    Message : 'commented on your post',
+                    username : currentpost.authorname,
+                    post_id : currentpost.id,
+                    photo : currentuser.photo,
+                    type : 'comment'
+                }
+
+                let send_notif = await Notification(data);
+                if(send_notif.status !== 200){
+                    console.log(send_notif);
+                }
+            }
         } catch (error) {
             return error;
         }
@@ -85,7 +103,23 @@ const SinglePost = () => {
             response = await newlike(data);
             if (response.status === 200) {
                 setReload(!reload);
-
+                
+                if(!liked && currentpost.authorname !== currentuser.username){
+                    const data = {
+                        ID : currentuser._id,
+                        Name : currentuser.username,
+                        Message : 'liked your post',
+                        username : currentpost.authorname,
+                        post_id : currentpost.id,
+                        photo : currentuser.photo,
+                        type : 'liked'
+                    }
+    
+                    let send_notif = await Notification(data);
+                    if(send_notif.status !== 200){
+                        console.log(send_notif);
+                    }
+                }
             }
             else if (response.status === 201) {
                 setLiked(false);
@@ -122,7 +156,10 @@ const SinglePost = () => {
             <div className={sp.mainpost}>
                 <div className={sp.image}>
                     {currentpost.video === 'null' ?
-                        <img alt="nill" className={sp.img} src={currentpost.photo} />
+                        <img 
+                        alt="nill" 
+                        onClick={() => window.open(currentpost.photo)} 
+                        className={sp.img} src={currentpost.photo} />
                         :
                         <video controls autoPlay className={sp.img}>
                             <source src={currentpost.video} />
@@ -132,14 +169,14 @@ const SinglePost = () => {
 
                 <div className={sp.postdetails}>
                     <div className={sp.details}>
-                       <Link to={`/profile/${currentpost.authorname}`}> <div className={sp.profile}>
+                       <Link style={{textDecoration:"none",color:"black"}} to={`/profile/${currentpost.authorname}`}> <div className={sp.profile}>
                             <img
-                                alt="nill"
+                                alt={require('../../images/noooaccc.png')}
                                 className={sp.profileimg}
                                 style={{ width: '35px', borderRadius: '20px' }}
-                                src={poster.photo}
+                                src={currentpost.authorphoto}
                             />
-                            <p>{poster.username}</p>
+                            <p>{currentpost.authorname}</p>
                         </div>
                         </Link>
                         <br />
@@ -153,7 +190,7 @@ const SinglePost = () => {
                         {comments.map((comm) => {
                             return (<div className={sp.comment}>
                                 <img alt="nill" src={comm.userimage} />
-                                <p> <h>{comm.username} - </h>{comm.content}</p>
+                                <p> <Link style={{textDecoration:"none"}} to={`/profile/${comm.username}`}><h>{comm.username}</h></Link>  {comm.content}</p>
                             </div>)
                         })}
                     </div>

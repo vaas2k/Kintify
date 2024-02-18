@@ -78,6 +78,7 @@
 .details p1{
     font-size: 14px;
     font-weight: 400;
+    margin-left: 20px;
 }
 
 /*sytling for image*/
@@ -85,9 +86,11 @@
     margin-right: 30px;
 }
 .img{
+    cursor: pointer;
     border-radius: 20px;
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
 
 /* styling for css */
@@ -126,7 +129,10 @@
     margin-top: 20px;
 }
 .comment img{
-    width: 33px;
+    margin-top: 8px;
+    width: 27px;
+    height: 29px;
+    object-fit:fill;
     margin-right: 15px;
     border-radius: 20px;
 }

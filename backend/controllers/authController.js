@@ -2,6 +2,7 @@
 const password_pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,25}$/;
 const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
 
+const NOTIFICATION = require('../Schemas/notifiactions')
 const USER = require('../Schemas/user');
 const FOLLOW = require('../Schemas/following');
 const dotenv = require("dotenv").config();
@@ -71,7 +72,6 @@ const users = {
                 
                 const responce =  await cloudinary.uploader.upload(photo, {
                     resource_type: 'image',
-                    public_id: "users-kintify"
                 })
                 imageUrl = responce.secure_url;
             }
@@ -112,8 +112,10 @@ const users = {
             const followings = new FOLLOW({
                 userID : user._id
             })
-
+            const notifications = new NOTIFICATION({username : username});
+            await notifications.save();
             await followings.save();
+
 
         }catch(error){
             return next(error);
@@ -290,6 +292,3 @@ const users = {
 
 module.exports = users;
 
-/*
-
-*/

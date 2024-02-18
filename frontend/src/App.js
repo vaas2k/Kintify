@@ -1,8 +1,6 @@
 import './App.css';
 
 import Navbar from './components/Navbar/navbar';
-import Login from './components/login sign/login-sign';
-import Sign from './components/login sign/sign';
 import Home from './components/home/home';
 import Feed from './pages/feeds/feeds';
 import Create from './pages/create/create';
@@ -14,18 +12,15 @@ import Photo from './components/photo/photo';
 import useAutoLogin from './hooks/autologin';
 import { Protected,} from './components/protected/protected'
 import { useSelector } from 'react-redux';
-import { useEffect,} from 'react';
 import SinglePost from './pages/singlePost/singlePost';
-
-
-const App = () => {
-
-  useEffect(()=>{
-    window.localStorage.setItem('post',JSON.stringify({message : 'lmaow'}));
-  },[])
-
+import Follow from './pages/profile/followComp/follow';
+import Notification from './components/notification/notification';
+import Chat from './pages/Chat/chat';
+import useSocket from './api/socket';
+const App =() => {
   const isAuth = useSelector((state) => { return state.user.auth });
   useAutoLogin();
+  //useSocket();
 
   let errorredirect;
   if(isAuth){
@@ -46,25 +41,19 @@ const App = () => {
               <a href={errorredirect}>go back</a>
             </div>
           } />
+
           <Route path='/' element={<Front />} />
-
           <Route path="/home" element={<Protected isAuth={isAuth}><Home /></Protected>} />
-
-          <Route path="/login" element={<Login />} />
-
-          <Route path="/sign" element={<Sign />} />
-
+          <Route path='/follows' element={<Follow/>}/>
           <Route path="/feed" element={<Feed />} />
-
-          <Route path={`/profile/:username`} element={<Protected isAuth={isAuth}><Profile /></Protected>} />
-
+          <Route path={`/profile/:username`} element={<Profile />}/>
           <Route path="/create" element={<Protected isAuth={isAuth}><Create /></Protected>} />
-
           <Route path="/explore" element={<Explore />} />
-
+          <Route path="/noti" element={<Protected isAuth={isAuth}><Notification /> </Protected>} />
           <Route path="/image" element={<Protected isAuth={isAuth}><Photo /></Protected>} />
           <Route path="/post/:id" element={<Protected isAuth={isAuth}><SinglePost /></Protected>}/>
-
+          <Route path="/chat/:id" element={<Protected isAuth={isAuth}><Chat /></Protected>}/>
+          
         </Routes>
       </BrowserRouter>
     </div>

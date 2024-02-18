@@ -11,7 +11,7 @@ const newPost = new Schema({
     videoPath : {type : String},
     allowcomment : {type : Boolean},
     tags : [{type : String}],
-    link : {type : String},
+    userlinks : {type : String},
     likes : {type : Number, default : 0},
     authorPhoto : {type : String},
     authorName : {type : String}

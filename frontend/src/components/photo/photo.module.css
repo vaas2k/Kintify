@@ -49,6 +49,9 @@
 .photoPreview {
     margin-top: 20px;
 }
+.photoPreview img{
+    object-fit:cover;
+}
 
 
 .close button {

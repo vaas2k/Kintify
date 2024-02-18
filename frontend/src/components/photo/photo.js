@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import p from './photo.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import {signup} from '../../api/internal'
+import {signup , get_notifications}  from '../../api/internal'
 
-import {setUser , resetUser} from '../../store/userslice';
-import { Navigate, useNavigate } from 'react-router-dom';
+import {setUser } from '../../store/userslice';
+import { useNavigate } from 'react-router-dom';
+import { setUserNotif , setSeen } from '../../store/notiSlice';
 
 const Photo = (props) => {
 
@@ -57,23 +58,41 @@ const Photo = (props) => {
       photo: photo
     }
 
-    
-    try{
+
+    try {
       const responce = await signup(data);
-      if(responce.status === 200){
+      if (responce.status === 200) {
         console.log(responce.data.newuser);
         const user = {
-          _id : responce.data.newuser._id,
-          username : responce.data.newuser.username,
-          auth : responce.data.newuser.auth,
-          photo : responce.data.newuser.photo,
-          name : responce.data.newuser.name
+          _id: responce.data.newuser._id,
+          username: responce.data.newuser.username,
+          auth: responce.data.newuser.auth,
+          photo: responce.data.newuser.photo,
+          name: responce.data.newuser.name
         }
+
         dispatch(setUser(user));
         navigate('/home');
+        let notifs = await get_notifications(user.username);
+        if (notifs.status === 200) {
+          console.log(notifs.data.notis);
+          const notification = notifs.data.notis.notification;
+          dispatch(setUserNotif(notification));
+
+
+          if (notification && notification.length > 0) {
+            for (let i = 0; i < 4; i++) {
+              if (notification[i].is_seen !== undefined && notification[i].is_seen === false) {
+                dispatch(setSeen(false));
+                console.log(i);
+              }
+            }
+          }
+        }
+
       }
-      else if(responce.status !== 200){
-        console.log('error --> ' , responce.data.error.message);
+      else if (responce.status !== 200) {
+        console.log('error --> ', responce.data.error.message);
       }
     }catch(error){
       console.log(error);

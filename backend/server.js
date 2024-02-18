@@ -1,17 +1,24 @@
 const express = require('express');
-
+const {createServer} = require('http');
+const {Server} = require('socket.io');
 const {PORT} = require('./configs/secret');
 const DBConnect = require('./DataBase/database');
 const router = require('./routes/router');
 const error_middleware = require('./middlewares/erroHandler');
 const cookieParser = require('cookie-parser');
-const auth = require('./middlewares/auth');
-const app = express();
-const path = require('path');
 const cors = require('cors');
+const app = express();
+const chatService = require('./chat Service/chat');
 
-
-
+const server = createServer(app);
+const io = new Server(server,{
+    cors : {
+        origin : 'http://localhost:3000',
+        method:"*",
+        credentials : true
+    }
+})
+chatService(io);
 
 const Port = PORT;
 app.use(cookieParser());
@@ -26,4 +33,4 @@ DBConnect();
 app.use(router);
 app.use(error_middleware);
 
-app.listen(Port,()=> console.log(`Server listeing on ${Port}`));
+server.listen(Port,()=> console.log(`Server listeing on ${Port}`));

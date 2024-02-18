@@ -2,9 +2,9 @@ import axios from "axios";
 
 const api = axios.create({
     baseURL: `http://localhost:8800`,
-    withCredentials : true,
+    withCredentials: true,
     headers: {
-        "Content-Type" : "application/json"
+        "Content-Type": "application/json"
     }
 })
 
@@ -12,37 +12,37 @@ const api = axios.create({
 
 
 const login = async (data) => {
-    let response ;
+    let response;
 
-    try{
-        response = await api.post('/login',data);
+    try {
+        response = await api.post('/login', data);
     }
-    catch(error){
+    catch (error) {
         return error;
     }
-    
+
     return response;
 }
 
 const signup = async (data) => {
-    let response ;
+    let response;
 
-    try{
-        response = await api.post('/signup',data);
+    try {
+        response = await api.post('/signup', data);
     }
-    catch(error){
+    catch (error) {
         return error;
     }
-    
+
     return response;
 }
 
 const logout = async () => {
 
     let response;
-    try{
+    try {
         response = await api.get('/logout');
-    }catch(error){
+    } catch (error) {
         return error;
     }
     return response;
@@ -52,9 +52,9 @@ const logout = async () => {
 const createPost = async (data) => {
 
     let response;
-    try{
-        response = await api.post('/create',data);
-    }catch(error){
+    try {
+        response = await api.post('/create', data);
+    } catch (error) {
         return error;
     }
     return response;
@@ -64,9 +64,9 @@ const createPost = async (data) => {
 const singlePost = async (id) => {
 
     let response;
-    try{
-        response  = await api.get(`/post/${id}`);
-    }catch(error){
+    try {
+        response = await api.get(`/post/${id}`);
+    } catch (error) {
         return error;
     }
 
@@ -76,9 +76,9 @@ const singlePost = async (id) => {
 const getallPosts = async (id) => {
 
     let response;
-    try{
-        response  = await api.get(`/posts`);
-    }catch(error){
+    try {
+        response = await api.get(`/posts`);
+    } catch (error) {
         return error;
     }
 
@@ -88,30 +88,30 @@ const getallPosts = async (id) => {
 const newComment = async (data) => {
 
     let response;
-    try{
-        response = await api.post('/comment',data);
-    }catch(error){
+    try {
+        response = await api.post('/comment', data);
+    } catch (error) {
         return error;
     }
     return response;
 
 }
 
-const newlike = async(data) => {
+const newlike = async (data) => {
 
     let response;
-    try{
-        response = await api.post('/like',data);
-    }catch(error){
+    try {
+        response = await api.post('/like', data);
+    } catch (error) {
         return error;
     }
     return response;
 }
 const similar_tags_posts = async (tags) => {
     let response;
-    try{
-        response = await api.post('/sameposts' , tags);
-    }catch(error){
+    try {
+        response = await api.post('/sameposts', tags);
+    } catch (error) {
         return error;
     }
     return response;
@@ -120,18 +120,18 @@ const similar_tags_posts = async (tags) => {
 const update_user_suggestions = async (data) => {
     let response;
 
-    try{
-        response = await api.post('/updatetags',data);
-    }catch(error){
+    try {
+        response = await api.post('/updatetags', data);
+    } catch (error) {
         return error;
     }
     return response;
 }
 const userPosts = async (id) => {
-    let response ;
-    try{
+    let response;
+    try {
         response = await api.get(`/postsbyuser/${id}`);
-    }catch(error){
+    } catch (error) {
         return console.log(error);
     }
     return response;
@@ -140,9 +140,9 @@ const userPosts = async (id) => {
 
 const getuserdata = async (id) => {
     let response;
-    try{
+    try {
         response = await api.get(`/getuserdata/${id}`);
-    }catch(error){
+    } catch (error) {
         return error;
     }
     return response;
@@ -150,8 +150,76 @@ const getuserdata = async (id) => {
 
 const follow = async (data) => {
     let response;
+    try {
+        response = await api.post(`/follow`, data);
+    } catch (error) {
+        return error;
+    }
+    return response;
+}
+
+const Notification = async (data) => {
+    let response;
+    try {
+        response = await api.put('/send_notification', data);
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+    return response;
+}
+
+const get_notifications = async (id) => {
+    let response ;
+
     try{
-        response = await api.post(`/follow`,data);
+        response = await api.get(`/notifications/${id}`);
+    }catch(error){
+        console.log(error);
+        return error;
+    }
+
+    return response;
+}
+
+const updatenotifications = async (data) => {
+    let response ;
+
+    try{
+        response = await api.put(`/updatenotifications`,data);
+    }catch(error){
+        console.log(error);
+        return error;
+    }
+
+    return response;
+}
+
+const GetChats = async (id) => {
+
+    let response ;
+    try{
+        response = await api.get(`/getmessages/${id}`);
+    }catch(error){
+        return response;
+    }
+
+    return response;
+}
+
+const storeMessages = async (data) => {
+    let response; 
+    try{
+        response = await api.post('/storemessages',data);
+    }catch(error){
+        return error;
+    }
+    return response;
+}
+const startChat = async (data) => {
+    let response ;
+    try{
+        response = await api.post('/startChat',data);
     }catch(error){
         return error;
     }
@@ -159,8 +227,10 @@ const follow = async (data) => {
 }
 
 
+
 export {
     login,
+    GetChats,
     signup,
     logout,
     createPost,
@@ -172,8 +242,12 @@ export {
     update_user_suggestions,
     userPosts,
     getuserdata,
-    follow
-
+    follow,
+    Notification,
+    get_notifications,
+    updatenotifications,
+    storeMessages,
+    startChat
 }
 
 
@@ -182,16 +256,16 @@ api.interceptors.response.use(
     async error => {
         const originalreq = error.config;
 
-        if((error.response.message === '401' || error.response.message === '500') && (originalreq && !originalreq._isRetry)){
+        if ((error.response.message === '401' || error.response.message === '500') && (originalreq && !originalreq._isRetry)) {
             originalreq._isRetry = true;
-            try{
-                await api.get('http://localhost:8800/refresh',{
-                    withCredentials : true
+            try {
+                await api.get('http://localhost:8800/refresh', {
+                    withCredentials: true
                 });
 
                 api.request(originalreq);
 
-            }catch(error){
+            } catch (error) {
                 return error;
             }
         }
