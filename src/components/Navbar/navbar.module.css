@@ -2,11 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: -10px;
-  margin-bottom: 10px;
+  margin-top: -15px;
+  margin-bottom: 8px;
 }
 .navbar h{
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bold;
 }
 
@@ -16,7 +16,7 @@
   align-items: center;
   justify-content: space-evenly;
   column-gap: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
   column-gap: 10px;
 }
 
@@ -49,16 +49,19 @@
 
 .search {
   max-width: 400px;
+  margin-right: 6.5px;
+  transition: all 0.5s ease;
 }
 
 .searchInput {
-  width: 400px;
+  width: 380px;
   height: 30px;
   border: none;
   outline: none;
   padding: 10px;
   border-radius: 25px;
   background-color: #EFEFEF;
+  transition: all 0.5s ease;
 }
 .searchInput::selection{
   background-color: #373636;
@@ -67,6 +70,17 @@
 
 :root {
   --search-input-width: 500px;
+}
+
+@media (max-width: 1066px) {
+  .search{
+    max-width: 350px;
+  }
+  .searchInput {
+    width: calc(var(--search-input-width) - 200px);
+    /* Adjust the decrement value */
+  }
+  
 }
 
 @media (max-width: 834px) {
@@ -83,10 +97,22 @@
   }
 }
 
+@media (max-width: 630px) {
+  .search{
+    max-width: 155px;
+    margin-left: -10px;
+  }
+  .searchInput {
+    width: calc(var(--search-input-width) - 350px);
+    /* Adjust the decrement value */
+  }
+}
+
 
 
 /* BUTTON */
 .navbar button {
+  margin: 5px;
   border-width: 20px;
   font-size: 17.5px;
   display: inline-block;
@@ -98,6 +124,7 @@
   color: #333;
   background-color: white;
   border-radius: 15px;
+  height: 40px;
   transition: background-color 0.5s ease;
 }
 
@@ -111,3 +138,40 @@
   color: white;
 }
 
+
+
+.dropmenu{
+  display: flex;
+  font-size: 15px;
+  font-weight:normal;
+  width:210px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  z-index: 10;
+  border: 0px solid gray;
+  transition: all 0.5s ease out ;
+}
+
+.ddmenu li{
+  text-align: center;
+  list-style: none;
+}
+
+.ddmenu::before{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  transition: all 0.5s ease out ;
+}
+
+.belll{
+  width: 20px;
+}
+.r_buttons:hover{
+  color: white;
+}

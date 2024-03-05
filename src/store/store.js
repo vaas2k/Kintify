@@ -5,11 +5,13 @@ import storage from "redux-persist/lib/storage";
 import user from './userslice';
 import log from './logslic'
 import post from './postSlice'
+import noti from "./notiSlice";
+import chat from './chatSlice'
 
 const persistConfig = {
   key : 'root',
   storage,
-  whitelist : ['post']
+  whitelist : ['post', 'noti','chat']
 }
 
 
@@ -17,7 +19,9 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user,
   log, 
-  post
+  post,
+  noti,
+  chat
 })
 
 const persistedReducer = persistReducer(persistConfig,rootReducer);

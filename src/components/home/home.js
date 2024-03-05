@@ -4,15 +4,35 @@ import { Link } from 'react-router-dom';
 import { getallPosts , similar_tags_posts } from '../../api/internal';
 import { useRef } from 'react';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setPost} from '../../store/postSlice';
-
+import { setChats } from '../../store/chatSlice';
+import { GetChats } from '../../api/internal';
 const Home = (props) => {
 
+  const currentID = useSelector((state) => { return state.user._id});
+  useEffect(()=>{
+      async function getchats() {
+        try{
+          let chatt = await GetChats(currentID);
+          let chat = chatt.data.chat;
+          dispatch(setChats(chat));
+        }
+        catch(error){
+          console.log(error);
+        }
+      }
+      getchats();
+  },[]);
+  
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const videoRef = useRef();
   const [post, setPosts] = useState([]);
+
+   console.log(post);
 
     useEffect(() => {
       async function getposts() {
@@ -52,6 +72,7 @@ const Home = (props) => {
 
 
     function handlesinglepost(item){
+      console.log(item);
       dispatch(setPost(item));
 
       // if post was Clicked save the tags in session storage
@@ -91,8 +112,8 @@ const Home = (props) => {
           onClick={()=>handlesinglepost(item)}
           loop
           muted="muted"
-          onMouseEnter={(e) => e.target.play()}
-          onMouseLeave={(e) => e.target.pause()}
+          onMouseEnter={(e) => {  e.target.play()}}
+          onMouseLeave={(e) => {  e.target.pause()}}
           className={h.postvid}
           
         >
@@ -100,13 +121,13 @@ const Home = (props) => {
           Your browser does not support the video tag.
         </video>)
       }
-      <Link to={`/profile/${item.authorname}`}><div className={h.pfp}><img alt='nill' src={item.authorphoto}/> <h>{item.authorname}</h></div></Link>
+      <Link style={{color:'black',textDecoration:'none'}} to={`/profile/${item.authorname}`}><div className={h.pfp}><img alt='nill' src={item.authorphoto}/> <h>{item.authorname}</h></div></Link>
     </div>)
   })
 
   return (
     <div className={h.posts}>
-      {newposts}
+      { newposts }
     </div>
   );
 }

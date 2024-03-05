@@ -2,18 +2,19 @@
 .dropmenu{
   font-size: 15px;
   font-weight:normal;
-  width:100px;
-  padding: 15px;
+  width:105px;
+  padding: 10px;
   border-radius: 20px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  z-index: 10;
   border: 0px solid gray;
+  transition: all 0.5s ease out ;
 }
 
 .dropmenu li{
-  margin-left: 4px;
+  text-align: center;
   list-style: none;
-  margin-top: 5px;
 }
 
 .dropmenu::before{
@@ -23,4 +24,47 @@
   background-color: white;
   border-left: 1px solid gray;
   border-right: 1px solid gray;
+  transition: all 0.5s ease out ;
+}
+
+
+.ddmenu{
+  display: flex;
+  font-size: 15px;
+  font-weight:normal;
+  width:210px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  z-index: 10;
+  border: 0px solid gray;
+  margin-top: 0px;
+  margin-left: -82.5px;
+  transition: all 0.5s ease out ;
+}
+
+.ddmenu li{
+  text-align: center;
+  list-style: none;
+}
+
+.ddmenu::before{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  transition: all 0.5s ease out ;
+}
+
+@media (max-width:900px) {
+  .ddmenu{
+    width: 190px;
+    margin-right: 50px;
+  }
+  .ddmenu li{
+    margin: -5px;
+  }
 }

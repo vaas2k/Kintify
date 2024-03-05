@@ -1,0 +1,176 @@
+
+.parent{
+    display: flex;
+    align-items: center;
+    
+}
+
+.leftbar , .middlebar ,.rightbar {
+    height:661px;
+}
+
+.leftbar{
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    border-right: 1px solid;
+}
+.middlebar{
+    width: 95%;
+}
+.rightbar {
+    width: 400px;
+}
+
+.left_info{
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    
+    .left_profile{
+        display :flex;
+        align-items:center;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 10px;
+        transition: all 0.5s ease;
+    }
+    .left_profile:hover{
+        background-color: rgb(243, 243, 243);
+    }
+    .leftmessageinfo{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-left: 10px;
+    }
+}
+
+.messageBox{
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+
+    .msginput {
+        width: 450px;
+        height: 30px;
+        border: none;
+        outline: none;
+        padding: 10px;
+        border-radius: 25px;
+        background-color: #EFEFEF;
+        transition: all 0.5s ease;
+      }
+      .msginput::selection{
+        background-color: #373636;
+        color: white;
+      }
+}
+
+
+
+.messageslist{
+    height: 490px;
+    overflow: auto;   
+    padding-left: 40px;
+    padding-right: 40px;
+}
+.msg{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px; 
+}
+.msg2{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 0px; 
+}
+
+.usermsg{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.send{
+    width: 45px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+.send:hover{
+    color: rgb(236, 55, 55);
+}
+.send:active{
+    color: #373636;
+}
+
+.msg2 p {
+    background-color: #494646;
+    max-width: max-content;
+    max-height: fit-content;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    border-radius: 10px 10px 60px 10px;
+
+}
+.msg p {
+    background-color: #1fabe2;
+    max-width: max-content;
+    max-height: fit-content;
+    text-align: center;
+    color: white;
+    border-radius: 100px 10px 40px 0px;
+    padding: 10px;
+}
+
+
+.newmsgbutton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 280px;
+}
+
+.newmsgbutton button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    height: 40px;
+    border-radius: 15px ;
+    font-size: 15px;
+    border: 1px solid slategrey;
+    transition: all 0.6s ease;
+}
+.newmsgbutton button:hover{
+    background-color: #ff2626;
+    color:#ffffff;
+    font-size: 20px;
+    width: 200px;
+    height: 50px;
+    border-radius: 20px ;
+    border: 1px solid #ffffff;
+}
+
+.containuserbar{
+    display:flex ;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #ffffff;
+    border-bottom: 1px solid;
+    padding: 2px;
+    text-align: center;
+    h3{
+        color:rgb(0, 0, 0);
+    }
+    img{
+        width: 40px;
+        border-radius: 20px;
+    }
+}
+

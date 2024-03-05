@@ -2,6 +2,7 @@
     column-count: 5;
     column-gap: 1em;
     padding: 12px;
+    transition: all 0.5s ease;
 }
 
 .postimg {

@@ -1,0 +1,85 @@
+.parent img{
+    margin: 0px;
+}
+.parent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -50px;
+}
+
+.main_follow_box h3{
+    color: black;
+    margin-top: -15px;
+}
+.main_follow_box{
+    background-color: white;
+    position: fixed;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    width: 350px;
+    height: 420px;
+    overflow: auto;
+    border-radius: 20px;
+    z-index: 10;
+}
+
+.contain_follows{
+    margin: 15px;
+    margin-top: 23px;
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    justify-content: space-between;
+    transition: all 0.5s ease;
+}
+
+.contain_follows:hover{
+    color: white;
+    background-color: rgb(44, 44, 44); ;
+    transform: scale(1.1);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;}
+    .img_name img{
+        width:45px ;
+    }
+
+.img_name{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+.img_name img{
+    margin-right: 10px;
+    width: 35px;
+    border-radius: 20px;
+}
+
+
+.contain_follows button{
+    background: none;
+    border: none;
+    background-color: rgb(231, 231, 231);
+    width: 65px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(44, 44, 44);
+    height: 23.5px;
+    border-radius: 10px;
+    padding: 2px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.contain_follows button:hover{
+    background-color: rgb(44, 44, 44);
+    color: white;
+}
+
+.contain_follows button:active{
+    background-color: rgb(231, 231, 231);
+    color: rgb(44, 44, 44);
+}
+
+.x:hover{
+    cursor: pointer;
+    color:tomato
+}

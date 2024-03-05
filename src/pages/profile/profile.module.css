@@ -1,59 +1,79 @@
-.mainpf{
-    font-weight: 550;
+.mainpf {
+  font-weight: 550;
 
 }
 
-.profile{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    row-gap: 20px;
-    margin-bottom: 20px;
-    padding: 20px;
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  position: relative;
 }
-.profile img{
-    margin-top: 20px;
-    border-radius: 70px;
+
+.profile img {
+  margin-top: 20px;
+  border-radius: 70px;
 }
 
 
 
 .mainpf button {
-    border-width: 20px;
-    font-size: 16.5px;
-    display: inline-block;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    border: 1px #ccc;
-    color: #333;
-    background-color: rgb(240, 240, 240);
-    border-radius: 15px;
-    transition: background-color 0.5s ease;
-  }
-  
-  .mainpf button:hover {
-    background-color: #ff2626;
-    color: white;
-  }
-  
-  .mainpf button:active {
-    background-color: #373636;
-    color: white;
-  }
+  border-width: 20px;
+  font-size: 16.5px;
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px #ccc;
+  color: #333;
+  background-color: rgb(240, 240, 240);
+  border-radius: 15px;
+  transition: background-color 0.5s ease;
+}
+
+.mainpf button:hover {
+  background-color: #ff2626;
+  color: white;
+}
+
+.mainpf button:active {
+  background-color: #373636;
+  color: white;
+}
 
 
-  .buts{
-    margin-top: 30px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .buts > button {
-    margin-top: -10px;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+.buts {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buts>button {
+  margin-top: -10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.f_but {
+  cursor: pointer;
+}
+
+.f_but:hover {
+  opacity: 65%;
+}
+
+.FnU{
+  font-weight: 600;
+}
+
+.follow_message_buttons{
+  display :flex;
+  column-gap: 10px;
+}

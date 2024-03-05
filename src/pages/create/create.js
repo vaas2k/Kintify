@@ -1,12 +1,10 @@
 import c from './create.module.css';
-import Photo from '../../components/photo/photo';
 import TextInput from '../../components/textinput/textinput';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Replace } from 'lucide-react';
 import { useFormik } from 'formik';
 import PostSchema from '../../schema/postschema';
-import { boolean } from 'yup';
-import { createPost } from '../../api/internal';
+import { createPost, Post_Notification } from '../../api/internal';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 const Create = () => {
@@ -16,7 +14,6 @@ const Create = () => {
   const [selectedMedia, setSelectedMedia] = useState('');
   const [previewMedia, setPreview] = useState('');
   const [mediaType, setMediaType] = useState('');
-  const [radiocheck, setradioCheck] = useState('');
   const user = useSelector((state) => { return state.user });
 
   const { checked, values, touched, handleBlur, handleChange, errors } = useFormik({
@@ -31,15 +28,8 @@ const Create = () => {
     validationSchema: PostSchema,
   });
 
-
-  function handleradio(e) {
-
-  }
-
-  console.log(values);
-
+  // converting string into array of strings
   function createTags() {
-    // converting string into array of strings
     const tags = [];
     let newword = ''
     for (let i = 0; i < values.tags.length; i++) {
@@ -65,18 +55,17 @@ const Create = () => {
     const post = {
       title: values.title,
       description: values.description,
-      link: values.link,
+      userlinks: values.link ||  'null',
       tags: tags,
       allowcomment: values.allowcomment,
       photo: mediaType === 'image' ? previewMedia : 'null',
       video: mediaType === 'video' ? previewMedia : 'null',
       author: user._id,
-      authorName : user.username,
-      authorPhoto : user.photo
+      authorName: user.username,
+      authorPhoto: user.photo
     }
+
     console.log(post);
-
-
 
     try {
       let response = await createPost(post);
@@ -87,9 +76,11 @@ const Create = () => {
       else if (response.status !== 200) {
         console.log(response.data);
       }
+
     } catch (error) {
       console.log(error);
     }
+
   }
 
   function handleFileChange(e) {
@@ -179,7 +170,7 @@ const Create = () => {
             <h4>Link</h4>
             <TextInput
               name='link'
-              values={values.link}
+              values={values.link || 'nill'}
               placeholder='link'
               onChange={handleChange}
               onBlur={handleBlur}
