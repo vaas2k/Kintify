@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: space-between;
   margin-top: -10px;
-  margin-bottom: 10px;
 }
 .navbar h{
   font-size: 15px;
@@ -16,7 +15,7 @@
   align-items: center;
   justify-content: space-evenly;
   column-gap: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
   column-gap: 10px;
 }
 
@@ -49,7 +48,7 @@
 
 .search {
   max-width: 400px;
-  margin-right: 05px;
+  margin-right: 6.5px;
   transition: all 0.5s ease;
 }
 
@@ -99,7 +98,8 @@
 
 @media (max-width: 630px) {
   .search{
-    max-width: 150px;
+    max-width: 155px;
+    margin-left: -10px;
   }
   .searchInput {
     width: calc(var(--search-input-width) - 350px);
@@ -166,4 +166,11 @@
   border-left: 1px solid gray;
   border-right: 1px solid gray;
   transition: all 0.5s ease out ;
+}
+
+.belll{
+  width: 20px;
+}
+.r_buttons:hover{
+  color: white;
 }

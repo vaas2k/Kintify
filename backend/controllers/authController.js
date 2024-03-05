@@ -251,8 +251,11 @@ const users = {
         const accesstoken = Jwt.signAccessToken({id : id }, "30min");
         const refreshtoken = Jwt.signRefreshToken({id : id },"60min");
 
+        let follows ;
         try{
-            await Refresh_token.updateOne({id : id},{token : refreshtoken});
+            await Refresh_token.updateOne({id : id},{token : refreshtoken})
+            follows = await FOLLOW.findOne({userID : id});
+            
         }catch(error){
             return next(error);
         }
@@ -269,7 +272,7 @@ const users = {
 
         const user = await USER.findOne({_id : id});
         const newuser = new userDto(user);
-        return res.status(200).json(newuser);
+        return res.status(200).json({newuser,follows});
     },
     async logout(req, res, next) {
         // get tokens 

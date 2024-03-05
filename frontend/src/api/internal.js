@@ -226,6 +226,17 @@ const startChat = async (data) => {
     return response;
 }
 
+const getQueryData = async (data) => {
+    
+    let response;
+    try{
+        response = await api.post(`/getquerydata`,data);
+    }catch(error){
+        return error;
+    }
+    return response;
+}
+
 
 
 export {
@@ -247,7 +258,8 @@ export {
     get_notifications,
     updatenotifications,
     storeMessages,
-    startChat
+    startChat,
+    getQueryData
 }
 
 

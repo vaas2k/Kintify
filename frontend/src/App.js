@@ -2,7 +2,6 @@ import './App.css';
 
 import Navbar from './components/Navbar/navbar';
 import Home from './components/home/home';
-import Feed from './pages/feeds/feeds';
 import Create from './pages/create/create';
 import Profile from './pages/profile/profile';
 import { Routes, Route, BrowserRouter} from 'react-router-dom';
@@ -16,7 +15,8 @@ import SinglePost from './pages/singlePost/singlePost';
 import Follow from './pages/profile/followComp/follow';
 import Notification from './components/notification/notification';
 import Chat from './pages/Chat/chat';
-import useSocket from './api/socket';
+import SearchPage from './pages/searchpage/searchpage';
+
 const App =() => {
   const isAuth = useSelector((state) => { return state.user.auth });
   useAutoLogin();
@@ -45,7 +45,7 @@ const App =() => {
           <Route path='/' element={<Front />} />
           <Route path="/home" element={<Protected isAuth={isAuth}><Home /></Protected>} />
           <Route path='/follows' element={<Follow/>}/>
-          <Route path="/feed" element={<Feed />} />
+          <Route path="/search/:id" element={<SearchPage />} />
           <Route path={`/profile/:username`} element={<Profile />}/>
           <Route path="/create" element={<Protected isAuth={isAuth}><Create /></Protected>} />
           <Route path="/explore" element={<Explore />} />

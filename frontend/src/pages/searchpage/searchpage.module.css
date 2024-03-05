@@ -1,0 +1,148 @@
+.parent{
+    padding: 10px;
+}
+
+/* contain buttons properties*/
+.post_profile_buttons{ 
+    display : flex;
+    column-gap: 15px;
+    margin: 10px;
+}
+.pp_buttons{
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    padding-left: 10px;
+    padding-right: 10px;
+    width : max-content;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    background-color: #d6d6d6;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+}
+.pp_buttons:hover{
+    background-color: #ff2626;
+    color: white;
+}
+.pp_buttons:active{
+    background-color: #373636;
+    color: white;
+}
+.pp_buttons_clicked{
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    padding-left: 10px;
+    padding-right: 10px;
+    width : max-content;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    background-color: #373636;
+    color: white;
+    transition: all 0.5s ease;
+}
+
+
+.containAll {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Adjust as needed */
+    transition: all 0.5s ease;
+    column-gap: 10px;
+    margin-top: 30px;
+    margin-left: 50px;
+    margin-right: 50px;
+    row-gap: 50px;  
+    justify-content: space-between;
+
+}
+  
+  .containProfiles {
+    transition: all 0.5s ease;
+  }
+  
+  @media screen and (max-width: 1259px) {
+    .containAll {
+            margin-top: 30px;
+            margin-left: 110px;
+            margin-right: 110px;
+        }
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .containAll{
+        margin: 0;
+    }
+    .containProfiles {
+        width: calc(100% - 20px); /* One profile per row on smaller screens */
+        transition: all 0.5s ease;
+    }
+  }
+
+  .profile{
+    border: 1px solid;
+    border-radius: 20px;
+    height: 250px;
+    max-width: 350px;
+    min-width: 350px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    
+    .profile_background{
+        height: 110px;
+        border-radius: 20px 20px 0px 0px;
+    }
+    img{
+        width: 80px;
+        border-radius: 40px;
+        margin-top: -25px;
+        margin-left: 10px;
+
+    }
+    .p1{
+        margin-left: 25px;
+        margin-top: 0px;
+        font-weight: 600;
+    }
+    .p2{
+        margin-left: 25px;
+        margin-top: -10px;
+    }
+    .h11{
+        margin-top:-10px;
+        margin-left: 20px;
+    }
+}
+
+.follow_button{
+    padding: 3px;
+    font-size: 14px;
+    font-weight: 600;
+    width : 80px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    background-color: #d6d6d6;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+    margin-left: 25px;
+}
+.follow_button:hover{
+    background-color: #ff2626;
+    color: white;
+}
+.follow_button:active{
+    background-color: #373636;
+    color: white;
+}

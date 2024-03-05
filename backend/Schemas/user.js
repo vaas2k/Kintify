@@ -9,7 +9,8 @@ const userSchema = new Schema ({
     email : {type : String , require : true},
     password : {type : String, require : true},
     photoPath : {type : String, require : true},
-    tags : [{type : String}]
+    tags : [{type : String}],
+    recent_searchs :[{type : String}]
 })
 
 module.exports = mongoose.model('USER',userSchema,'users-kintify');

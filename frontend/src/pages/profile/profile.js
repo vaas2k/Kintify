@@ -7,6 +7,7 @@ import { getuserdata, follow, userPosts, Notification, startChat } from '../../a
 import Follow from './followComp/follow';
 import { setUser } from '../../store/userslice';
 import { setChats, setCurrentChat } from '../../store/chatSlice';
+import { color } from 'framer-motion';
 
 
 const Profile = () => {
@@ -82,7 +83,7 @@ const Profile = () => {
         getData();
     }, [reload, params])
 
-
+    // Follow Button Handler
     async function handleFollowClick() {
         const data = {
             username: user_name,
@@ -115,20 +116,9 @@ const Profile = () => {
             return error;
         }
     }
-    console.log(getChats);
-    async function handleMessageClick() {
 
-        //const roomID = uuidv4();
-        //roomID.slice(7).toString('hex');
-        /**
-         * check page username in current redux state
-         * if exist then directly navigate to chat room
-         * else 
-         * make a call to api 
-         * make a room with user 
-         * refresh state for user
-         * then navigate to the room with new user 
-         * */
+    // Message Button Handler
+    async function handleMessageClick() {
         const checkuser = getChats.find((m) => {
             return m.messenger === pageaccount.username ? true : false;;
         })
@@ -204,6 +194,8 @@ const Profile = () => {
                     {isAuth && <div className={pf.follow_message_buttons}>
                         <button
                             className={pf.FnU}
+                            style={{color: followed ? 'white' : '',
+                                   backgroundColor:followed ? '#ff2626' : ''}}
                             onClick={handleFollowClick}>{followed ? 'unfollow' : 'follow'}</button>
                         <button onClick={handleMessageClick} className={pf.FnU}>Message</button>
 

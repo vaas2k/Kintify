@@ -8,6 +8,8 @@ const dotenv = require("dotenv").config();
 const Joi = require('joi');
 const userDto = require('../Dtos/usedto');
 const CHAT = require('../Schemas/chatScheme');
+const POST = require('../Schemas/post')
+const postDto = require('../Dtos/postdto');
 
 
 const usersProfile = {
@@ -31,12 +33,12 @@ const usersProfile = {
             const follower = await FOLLOW.findOne({ userID: user._id, followers: { $elemMatch: { ID: followerID } } });
                         
             if(follower){
-                // remove him as a follower
+                // add follower to followed to person list
                 await FOLLOW.updateOne(
                     {userID : user._id},
                     {$pull : {followers : {ID : followerID , Username : followerInfo.username , Photo : followerInfo.photoPath}}}
                 )
-                // remove the user from follower following list
+                // add followed person to follower followings list
                 await FOLLOW.updateOne(
                     {userID : followerID},
                     {$pull : {followings : {ID : user._id, Username : user.username , Photo : user.photoPath}}}
@@ -128,6 +130,50 @@ const usersProfile = {
         }
         return res.status(200).json({chats});
     },
+    async getQueryData (req, res, next) {
+        console.log(req.body);
+        const {id , userID} = req.body;
+        let Profiles;
+        let Posts; 
+        try{
+            Profiles = await USER.find({
+                $or : [
+                {name : id},
+                {username : id}
+                ]});
+            
+            Posts = await POST.find({
+                $or: [
+                    { title: id },
+                    { description: { $regex: id, $options: 'i' } }, // Case-insensitive regex match
+                    { tags: { $elemMatch: { $in: id } } }
+                ]
+            })
+
+            await USER.findOneAndUpdate({_id : userID},{
+                recent_searchs : id
+            })
+
+        }catch(error){
+            console.log(error);
+            return next(error);
+        }
+        const newProfiles = [];
+        for(i of Profiles){
+            const obj = {
+                name : i.name,
+                photo : i.photoPath,
+                username : i.username
+            }
+            newProfiles.push(obj)
+        }
+        const newPosts = []
+        for(i of Posts){
+            const post = new postDto(i);
+            newPosts.push(post);
+        }
+        return res.status(200).json({Profiles,newPosts});
+    }
 }
 
 module.exports = usersProfile;

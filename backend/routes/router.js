@@ -23,6 +23,7 @@ router.put('/send_post_notification',auth,notification.Post_Notification);
 router.put('/send_notification',auth,notification.Notification);
 router.get('/notifications/:id',auth,notification.get_notifications);
 router.put('/updatenotifications',auth,notification.update_notifications);
+router.post('/getquerydata',auth,usersProfile.getQueryData);
 
 //for chats
 router.get('/getmessages/:id',auth,chats.getMessages);

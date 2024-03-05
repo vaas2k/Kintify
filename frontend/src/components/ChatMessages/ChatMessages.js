@@ -10,9 +10,13 @@ const ChatMessages = () => {
     const currentID = useSelector((state) => { return state.user._id});
     useEffect(()=>{
         async function getchats() {
-            let chatt = await GetChats(currentID);
-            let chat = chatt.data.chat;
-            dispatch(setChats(chat));
+            try{
+                let chatt = await GetChats(currentID);
+                let chat = chatt.data.chat;
+                dispatch(setChats(chat));
+            }catch(error){
+                console.log(error);
+            }
         }
         getchats();
     },[]);
@@ -29,7 +33,7 @@ const ChatMessages = () => {
     
     const msnger = chats.map((m,i)=> {
         return m.messages.length > 1 && (<div className={Cm.info}>
-            <div
+            <div key={i}
                 onClick={ ()=> handleClick(m.messenger,m)}
                 style={{ backgroundColor: is_seen ? 'white' : 'rgb(243, 243, 243)' }}
                 className={Cm.profileinfo}>

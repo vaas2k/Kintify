@@ -1,30 +1,57 @@
 import React, { useEffect, useState, useRef } from 'react';
-import i from '../../images/noooaccc.png'
-
 import n from './navbar.module.css';
-import { Bell, LogOut, ChevronDownCircle, Home, BellRing, MessageCircleMore , BadgeInfo } from 'lucide-react';
+import { Bell, LogOut, ChevronDownCircle, Home,MessageCircleMore,} from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import DropDown from '../dropdown/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { togglelog, togglesign } from '../../store/logslic';
-import Logout from '../../hooks/logout';
 import { logout, updatenotifications } from "../../api/internal";
 import { resetUser } from "../../store/userslice";
 import Notification from '../notification/notification';
 import { resetNoti ,setSeen } from '../../store/notiSlice';
 import ChatMessages from '../ChatMessages/ChatMessages';
 import { resetChats } from '../../store/chatSlice';
-import { GetChats } from '../../api/internal';
-import { setChats } from '../../store/chatSlice';
 import { resetPost } from '../../store/postSlice';
 
 const Search = () => {
+
+  const navigate = useNavigate();
+  const [query , setQuery] = useState('');
+  const [outline ,setOutline] = useState(false);
+  const outLineRef = useRef();
+
+  function handleClickOutSide(event) {
+    if (outLineRef.current && !outLineRef.current.contains(event.target)) {
+      setOutline(false);
+    }
+  }
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutSide);
+    return () => document.removeEventListener('click', handleClickOutSide);
+  }, [])
+
+  console.log(query);
+
   return (
-    <div className={n.search}>
+    <div className={n.search} ref={outLineRef}>
+
       <input
+        style={{
+          border: outline && '1.5px solid red',
+          transition : 'all 0.5s ease'
+        }}
         className={n.searchInput}
         type='text'
         placeholder='Search'
+        value={query}
+        name='query'
+        onClick={() => setOutline(true)}
+        onChange = {(e)=>{setQuery(e.target.value)}}
+        onKeyDown={(event) => {
+          if(event.key === 'Enter'){
+            navigate(`/search/${query}`);
+          }
+        }}
       />
     </div>
   );
@@ -40,7 +67,6 @@ const Navbar = () => {
   const profileimage = useSelector((state) => { return state.user.photo })
   const islogged = useSelector((state) => { return state.user.auth });
   const username = useSelector((state) => { return state.user.username });
-  const currentID = useSelector((state) => { return state.user._id });
   console.log(username);
   const notification = useSelector((state) => {
     return state.noti.notification.map(item => {
@@ -73,12 +99,12 @@ const Navbar = () => {
     try {
       await updatenotifications(data);
       const response = await logout();
+      dispatch(resetUser());
+      dispatch(resetNoti());
+      dispatch(resetChats());
+      dispatch(resetPost());
+      navigate('/');
       if (response.status === 200) {
-        dispatch(resetUser());
-        dispatch(resetNoti());
-        dispatch(resetChats());
-        dispatch(resetPost())
-        navigate('/');
       }
     } catch (error) {
       throw error;
@@ -165,16 +191,8 @@ const Navbar = () => {
         <div className={n.right} >
           {islogged ? (
             <>
-              <button onClick={() => togglenoti(showNoti)}>
-                {seen === false && <BadgeInfo
-                style={{
-                  width:'10px',
-                  position : 'absolute',
-                  top : '25px',
-                  color : 'red'
-                }} 
-                />}
-                <Bell width={'20px'} /></button>
+              <button className={n.r_buttons} onClick={() => {togglenoti(showNoti) ;setShowMsg(false);}}>
+                <Bell color={seen === false ? 'red' : 'black'} width={'20px'} /></button>
               <button onClick={() => toggleMsg(showMsg)}  ><MessageCircleMore width={'20px'} /></button>
               <button onClick={() => handlelogout()}><LogOut width={'20px'} /></button>
             </>
@@ -193,7 +211,7 @@ const Navbar = () => {
           {menu1 && (
             <DropDown
               type='icons'
-              s1={islogged ? <button onClick={() => togglenoti(showNoti)}><Bell /></button> : <Link to={'/'}><button onClick={toggleLoginComp}><h>Login</h></button></Link>}
+              s1={islogged ? <button onClick={() => togglenoti(showNoti)}><Bell color={seen === false ? 'red' : 'black'} /></button> : <Link to={'/'}><button onClick={toggleLoginComp}><h>Login</h></button></Link>}
               s2={islogged ? <button onClick={() => toggleMsg(showMsg)} ><MessageCircleMore width={'20px'} /></button> : <Link to={'/'}><button onClick={toggleSignComp}><h>Signup</h></button></Link>}
               s3={islogged && <button onClick={handlelogout}><LogOut /></button>}
             />

@@ -21,14 +21,15 @@ const useAutoLogin = () => {
                 if (response.status === 200) {
 
                     const user = {
-                        username: response.data.username,
-                        _id: response.data._id,
-                        photo: response.data.photo,
-                        auth: response.data.auth,
-                        name: response.data.name
+                        username: response.data.newuser.username,
+                        _id: response.data.newuser._id,
+                        photo: response.data.newuser.photo,
+                        auth: response.data.newuser.auth,
+                        name: response.data.newuser.name,
+                        followings : response.data.follows.followings,
+                        followers : response.data.follows.followers
                     }
                     dispatch(setUser(user));
-                    
                 }
             } catch (error) {
                 return error;
